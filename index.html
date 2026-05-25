@@ -1,2307 +1,891 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nitesh Pal — Planning Engineer</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,700&family=Syne:wght@300;400;500;600;700&family=DM+Mono:wght@300;400&display=swap"
-        rel="stylesheet" />
-    <style>
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0
-        }
-
-        html {
-            scroll-behavior: smooth;
-            font-size: 16px
-        }
-
-        :root {
-            --g1: #D4A843;
-            --g2: #F2CC6B;
-            --g3: #A07828;
-            --g4: #6A4E18;
-            --g5: #2C1F08;
-            --bg: #060504;
-            --bg2: #0A0806;
-            --bg3: #0F0C08;
-            --bg4: #14110C;
-            --s1: #1A1510;
-            --s2: #221C14;
-            --s3: #2E2618;
-            --t1: #F5EDD8;
-            --t2: #A89880;
-            --t3: #635848;
-            --t4: #322C22;
-            --ln: rgba(212, 168, 67, .09);
-            --ln2: rgba(212, 168, 67, .2);
-            --ln3: rgba(212, 168, 67, .38);
-            --glow: rgba(212, 168, 67, .12);
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--t1);
-            font-family: 'Syne', sans-serif;
-            font-weight: 300;
-            overflow-x: hidden;
-            cursor: none;
-            line-height: 1.7
-        }
-
-        /* ══ CURSOR ══ */
-        #cd,
-        #cr {
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            top: 0;
-            left: 0;
-            will-change: transform
-        }
-
-        #cd {
-            width: 6px;
-            height: 6px;
-            background: var(--g2);
-            margin: -3px 0 0 -3px;
-            transition: transform .12s
-        }
-
-        #cr {
-            width: 38px;
-            height: 38px;
-            border: 1px solid rgba(212, 168, 67, .4);
-            margin: -19px 0 0 -19px;
-            transition: transform .08s, width .25s, height .25s, border-color .25s, margin .25s
-        }
-
-        body.hov #cr {
-            width: 52px;
-            height: 52px;
-            margin: -26px 0 0 -26px;
-            border-color: rgba(212, 168, 67, .75)
-        }
-
-        body.hov #cd {
-            transform: scale(1.5)
-        }
-
-        /* ══ CANVAS ══ */
-        #cvs {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 1
-        }
-
-        /* ══ NAV ══ */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 300;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.4rem 5rem;
-            transition: all .5s
-        }
-
-        nav.on {
-            background: rgba(6, 5, 4, .95);
-            backdrop-filter: blur(20px);
-            border-bottom: .5px solid var(--ln2)
-        }
-
-        .logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--g2);
-            text-decoration: none;
-            letter-spacing: .08em;
-            display: flex;
-            align-items: center;
-            gap: .3rem
-        }
-
-        .logo em {
-            font-style: italic;
-            color: var(--g3)
-        }
-
-        .nav-ul {
-            display: flex;
-            gap: 3rem;
-            list-style: none
-        }
-
-        .nav-ul a {
-            font-family: 'DM Mono', monospace;
-            font-size: .58rem;
-            letter-spacing: .24em;
-            text-transform: uppercase;
-            color: var(--t3);
-            text-decoration: none;
-            transition: color .3s;
-            position: relative;
-            padding-bottom: 4px
-        }
-
-        .nav-ul a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: .5px;
-            background: var(--g1);
-            transition: width .35s
-        }
-
-        .nav-ul a:hover {
-            color: var(--g2)
-        }
-
-        .nav-ul a:hover::after {
-            width: 100%
-        }
-
-        /* ══ HERO ══ */
-        #hero {
-            min-height: 100vh;
-            position: relative;
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-            padding: 0 5rem
-        }
-
-        .hero-rings {
-            position: absolute;
-            right: -5vw;
-            top: 50%;
-            transform: translateY(-50%);
-            width: min(70vw, 700px);
-            height: min(70vw, 700px);
-            pointer-events: none
-        }
-
-        .ring {
-            position: absolute;
-            border-radius: 50%;
-            border: .5px solid;
-            animation: spin linear infinite
-        }
-
-        .ring:nth-child(1) {
-            inset: 0;
-            border-color: rgba(212, 168, 67, .08);
-            animation-duration: 40s
-        }
-
-        .ring:nth-child(2) {
-            inset: 8%;
-            border-color: rgba(212, 168, 67, .06);
-            animation-duration: 30s;
-            animation-direction: reverse
-        }
-
-        .ring:nth-child(3) {
-            inset: 18%;
-            border-color: rgba(212, 168, 67, .1);
-            animation-duration: 22s
-        }
-
-        .ring:nth-child(4) {
-            inset: 30%;
-            border-color: rgba(212, 168, 67, .07);
-            animation-duration: 16s;
-            animation-direction: reverse
-        }
-
-        .ring:nth-child(5) {
-            inset: 42%;
-            border-color: rgba(212, 168, 67, .15);
-            animation-duration: 11s
-        }
-
-        .ring-dot {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: var(--g1);
-            border-radius: 50%;
-            top: 50%;
-            left: -3px;
-            transform: translateY(-50%);
-            box-shadow: 0 0 8px var(--g1)
-        }
-
-        .ring-center {
-            position: absolute;
-            inset: 50%;
-            transform: translate(-50%, -50%);
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            border: .5px solid rgba(212, 168, 67, .2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(212, 168, 67, .04)
-        }
-
-        .ring-center-txt {
-            font-family: 'DM Mono', monospace;
-            font-size: .5rem;
-            letter-spacing: .15em;
-            color: var(--g3);
-            text-transform: uppercase;
-            text-align: center;
-            line-height: 1.8
-        }
-
-        @keyframes spin {
-            from {
-                transform: rotate(0deg)
-            }
-
-            to {
-                transform: rotate(360deg)
-            }
-        }
-
-        .hero-body {
-            position: relative;
-            z-index: 2;
-            max-width: 640px
-        }
-
-        .hero-eyebrow {
-            font-family: 'DM Mono', monospace;
-            font-size: .62rem;
-            letter-spacing: .3em;
-            text-transform: uppercase;
-            color: var(--g3);
-            display: flex;
-            align-items: center;
-            gap: .9rem;
-            margin-bottom: 2.2rem;
-            opacity: 0;
-            animation: fadeUp .9s .2s both
-        }
-
-        .hero-eyebrow::before {
-            content: '';
-            width: 36px;
-            height: .5px;
-            background: var(--g3);
-            flex-shrink: 0
-        }
-
-        .hero-h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(4.5rem, 9vw, 9.5rem);
-            font-weight: 700;
-            line-height: .9;
-            letter-spacing: -.02em;
-            margin-bottom: 1rem;
-            overflow: hidden
-        }
-
-        .h1-ln {
-            display: block;
-            opacity: 0;
-            transform: translateY(110%);
-            animation: lineUp 1s cubic-bezier(.16, 1, .3, 1) both
-        }
-
-        .h1-ln:nth-child(1) {
-            animation-delay: .35s
-        }
-
-        .h1-ln:nth-child(2) {
-            animation-delay: .5s;
-            font-style: italic;
-            background: linear-gradient(120deg, var(--g2) 0%, var(--g1) 45%, var(--g2) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            background-size: 200%;
-            animation: lineUp 1s .5s cubic-bezier(.16, 1, .3, 1) both, shimmer 4s 1.5s ease-in-out infinite
-        }
-
-        @keyframes shimmer {
-
-            0%,
-            100% {
-                background-position: 0%
-            }
-
-            50% {
-                background-position: 100%
-            }
-        }
-
-        @keyframes lineUp {
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
-        }
-
-        .hero-role {
-            font-size: 1.05rem;
-            color: var(--t2);
-            letter-spacing: .05em;
-            margin-bottom: 2rem;
-            opacity: 0;
-            animation: fadeUp .9s .8s both
-        }
-
-        .hero-desc {
-            font-size: .95rem;
-            color: var(--t2);
-            line-height: 1.95;
-            border-left: 2px solid var(--g4);
-            padding-left: 1.4rem;
-            margin-bottom: 2.8rem;
-            max-width: 500px;
-            opacity: 0;
-            animation: fadeUp .9s 1s both
-        }
-
-        .hero-desc strong {
-            color: var(--g2);
-            font-weight: 500
-        }
-
-        .hero-btns {
-            display: flex;
-            gap: 1rem;
-            opacity: 0;
-            animation: fadeUp .9s 1.2s both;
-            flex-wrap: wrap
-        }
-
-        /* buttons */
-        .btn-solid {
-            display: inline-flex;
-            align-items: center;
-            gap: .7rem;
-            padding: .9rem 2.2rem;
-            background: linear-gradient(135deg, var(--g1), var(--g3));
-            color: #060504;
-            font-size: .68rem;
-            font-weight: 700;
-            letter-spacing: .2em;
-            text-transform: uppercase;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-            transition: transform .2s, box-shadow .3s
-        }
-
-        .btn-solid:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(212, 168, 67, .25)
-        }
-
-        .btn-solid::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--g2), var(--g1));
-            opacity: 0;
-            transition: opacity .4s
-        }
-
-        .btn-solid:hover::after {
-            opacity: 1
-        }
-
-        .btn-solid span {
-            position: relative;
-            z-index: 1
-        }
-
-        .btn-line {
-            display: inline-flex;
-            align-items: center;
-            gap: .7rem;
-            padding: .9rem 2.2rem;
-            border: .5px solid var(--ln3);
-            color: var(--g1);
-            font-size: .68rem;
-            font-weight: 400;
-            letter-spacing: .2em;
-            text-transform: uppercase;
-            text-decoration: none;
-            transition: all .35s;
-            background: transparent
-        }
-
-        .btn-line:hover {
-            border-color: var(--g1);
-            background: rgba(212, 168, 67, .06);
-            color: var(--g2);
-            transform: translateY(-2px)
-        }
-
-        /* hero stats strip */
-        .hero-stats {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            border-top: .5px solid var(--ln);
-            opacity: 0;
-            animation: fadeUp .9s 1.5s both;
-            z-index: 2
-        }
-
-        .hstat {
-            flex: 1;
-            padding: 1.4rem 2rem;
-            border-right: .5px solid var(--ln);
-            text-align: center;
-            background: rgba(6, 5, 4, .6);
-            backdrop-filter: blur(8px);
-            transition: background .35s
-        }
-
-        .hstat:last-child {
-            border-right: none
-        }
-
-        .hstat:hover {
-            background: rgba(26, 21, 16, .8)
-        }
-
-        .hstat-val {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.9rem;
-            font-weight: 700;
-            color: var(--g2);
-            line-height: 1
-        }
-
-        .hstat-lbl {
-            font-family: 'DM Mono', monospace;
-            font-size: .52rem;
-            letter-spacing: .18em;
-            text-transform: uppercase;
-            color: var(--t4);
-            margin-top: .35rem
-        }
-
-        /* scroll indicator */
-        .scroll-hint {
-            position: absolute;
-            right: 5rem;
-            bottom: 5rem;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: .6rem;
-            opacity: 0;
-            animation: fadeI 1s 2.2s both
-        }
-
-        .scroll-hint span {
-            font-family: 'DM Mono', monospace;
-            font-size: .5rem;
-            letter-spacing: .22em;
-            text-transform: uppercase;
-            color: var(--t4);
-            writing-mode: vertical-rl
-        }
-
-        .s-line {
-            width: .5px;
-            height: 55px;
-            background: linear-gradient(to bottom, var(--g4), transparent);
-            animation: pulse 2.2s ease-in-out infinite
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: .2;
-                transform: scaleY(.6) translateY(-8px)
-            }
-
-            50% {
-                opacity: 1;
-                transform: scaleY(1) translateY(0)
-            }
-        }
-
-        /* ══ SECTION COMMONS ══ */
-        section {
-            padding: 8rem 5rem;
-            position: relative
-        }
-
-        .sec-top {
-            margin-bottom: 4.5rem
-        }
-
-        .sec-tag {
-            font-family: 'DM Mono', monospace;
-            font-size: .58rem;
-            letter-spacing: .3em;
-            text-transform: uppercase;
-            color: var(--g4);
-            display: flex;
-            align-items: center;
-            gap: .8rem;
-            margin-bottom: 1rem
-        }
-
-        .sec-tag::before {
-            content: '';
-            width: 22px;
-            height: .5px;
-            background: var(--g4)
-        }
-
-        .sec-h {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2.5rem, 4.5vw, 4.2rem);
-            font-weight: 700;
-            line-height: 1.05;
-            color: var(--t1)
-        }
-
-        .sec-h em {
-            font-style: italic;
-            color: var(--g2)
-        }
-
-        .sec-sub {
-            font-size: .9rem;
-            color: var(--t3);
-            margin-top: .5rem;
-            letter-spacing: .02em
-        }
-
-        .gline {
-            width: 100%;
-            height: .5px;
-            background: linear-gradient(to right, transparent, var(--g4), transparent);
-            margin: 4rem 0;
-            opacity: .6
-        }
-
-        /* ══ ABOUT ══ */
-        #about {
-            background: var(--bg2)
-        }
-
-        .about-wrap {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0
-        }
-
-        .about-left {
-            padding-right: 4rem;
-            border-right: .5px solid var(--ln)
-        }
-
-        .about-right {
-            padding-left: 4rem
-        }
-
-        .ap {
-            font-size: .95rem;
-            color: var(--t2);
-            line-height: 2;
-            margin-bottom: 1.6rem
-        }
-
-        .ap strong {
-            color: var(--g2);
-            font-weight: 500
-        }
-
-        /* kpi cards */
-        .kpi-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1px;
-            background: var(--ln);
-            margin-top: 3rem;
-            border: .5px solid var(--ln2)
-        }
-
-        .kpi-c {
-            background: var(--bg2);
-            padding: 1.6rem 1rem;
-            text-align: center;
-            transition: background .3s
-        }
-
-        .kpi-c:hover {
-            background: var(--s1)
-        }
-
-        .kpi-v {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.4rem;
-            font-weight: 700;
-            color: var(--g2);
-            line-height: 1;
-            margin-bottom: .4rem
-        }
-
-        .kpi-l {
-            font-family: 'DM Mono', monospace;
-            font-size: .5rem;
-            letter-spacing: .18em;
-            text-transform: uppercase;
-            color: var(--t4)
-        }
-
-        /* skills */
-        .sk-blk {
-            margin-bottom: 2rem
-        }
-
-        .sk-head {
-            font-family: 'DM Mono', monospace;
-            font-size: .56rem;
-            letter-spacing: .22em;
-            text-transform: uppercase;
-            color: var(--g4);
-            margin-bottom: .85rem;
-            display: flex;
-            align-items: center;
-            gap: .7rem
-        }
-
-        .sk-head::after {
-            content: '';
-            flex: 1;
-            height: .5px;
-            background: var(--ln2)
-        }
-
-        .chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: .4rem
-        }
-
-        .ch {
-            padding: .28rem .85rem;
-            border: .5px solid var(--ln);
-            font-size: .68rem;
-            color: var(--t2);
-            background: var(--s1);
-            transition: all .3s;
-            letter-spacing: .03em
-        }
-
-        .ch:hover {
-            border-color: var(--g3);
-            color: var(--g2);
-            background: var(--s2)
-        }
-
-        /* bars */
-        .bar-sec {
-            margin-top: 2.5rem;
-            border-top: .5px solid var(--ln);
-            padding-top: 2rem
-        }
-
-        .bar-row {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: .6rem 0;
-            border-bottom: .5px solid var(--ln)
-        }
-
-        .bar-row:last-child {
-            border-bottom: none
-        }
-
-        .bar-lbl {
-            font-size: .7rem;
-            color: var(--t2);
-            min-width: 170px
-        }
-
-        .bar-track {
-            flex: 1;
-            height: 1px;
-            background: var(--ln2);
-            position: relative;
-            overflow: visible
-        }
-
-        .bar-fill {
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            background: linear-gradient(to right, var(--g4), var(--g2));
-            width: 0;
-            transition: width 1.8s cubic-bezier(.16, 1, .3, 1)
-        }
-
-        .bar-fill::after {
-            content: '';
-            position: absolute;
-            right: -2px;
-            top: -3px;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--g2);
-            box-shadow: 0 0 8px var(--g2);
-            opacity: 0;
-            transition: opacity .3s
-        }
-
-        .bar-fill.lit::after {
-            opacity: 1
-        }
-
-        /* ══ EXPERIENCE ══ */
-        #experience {
-            background: var(--bg3)
-        }
-
-        .xp-wrap {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            border: .5px solid var(--ln2)
-        }
-
-        /* sidebar */
-        .xp-side {
-            border-right: .5px solid var(--ln2);
-            background: var(--bg4)
-        }
-
-        .xt {
-            display: block;
-            width: 100%;
-            padding: 1.8rem 2rem;
-            border: none;
-            background: transparent;
-            text-align: left;
-            cursor: pointer;
-            border-bottom: .5px solid var(--ln);
-            position: relative;
-            transition: background .3s;
-            font-family: 'Syne', sans-serif
-        }
-
-        .xt:last-child {
-            border-bottom: none
-        }
-
-        .xt::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 2.5px;
-            background: linear-gradient(to bottom, var(--g2), var(--g1));
-            transform: scaleY(0);
-            transition: transform .4s cubic-bezier(.16, 1, .3, 1);
-            transform-origin: center
-        }
-
-        .xt.on,
-        .xt:hover {
-            background: var(--s1)
-        }
-
-        .xt.on::before,
-        .xt:hover::before {
-            transform: scaleY(1)
-        }
-
-        .xt-per {
-            font-family: 'DM Mono', monospace;
-            font-size: .54rem;
-            letter-spacing: .18em;
-            color: var(--g4);
-            text-transform: uppercase;
-            margin-bottom: .45rem
-        }
-
-        .xt-role {
-            font-size: .88rem;
-            color: var(--t1);
-            font-weight: 400;
-            margin-bottom: .2rem
-        }
-
-        .xt-co {
-            font-size: .7rem;
-            color: var(--t3)
-        }
-
-        /* pane */
-        .xp-main {
-            position: relative;
-            min-height: 500px;
-            overflow: hidden
-        }
-
-        .xp-pane {
-            position: absolute;
-            inset: 0;
-            padding: 3.5rem;
-            opacity: 0;
-            transform: translateX(30px);
-            transition: opacity .45s cubic-bezier(.16, 1, .3, 1), transform .45s cubic-bezier(.16, 1, .3, 1);
-            pointer-events: none;
-            overflow-y: auto
-        }
-
-        .xp-pane.on {
-            opacity: 1;
-            transform: translateX(0);
-            position: relative;
-            pointer-events: auto
-        }
-
-        .xp-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: .6rem;
-            padding: .3rem .9rem;
-            border: .5px solid var(--ln3);
-            font-family: 'DM Mono', monospace;
-            font-size: .54rem;
-            letter-spacing: .16em;
-            color: var(--g3);
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
-            background: rgba(212, 168, 67, .04)
-        }
-
-        .xp-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.2rem;
-            font-weight: 700;
-            line-height: 1.15;
-            margin-bottom: .5rem
-        }
-
-        .xp-title em {
-            font-style: italic;
-            color: var(--g2)
-        }
-
-        .xp-company {
-            font-size: .78rem;
-            color: var(--g3);
-            letter-spacing: .08em;
-            padding-bottom: 1.5rem;
-            margin-bottom: 1.8rem;
-            border-bottom: .5px solid var(--ln)
-        }
-
-        .xp-p {
-            font-size: .9rem;
-            color: var(--t2);
-            line-height: 1.95;
-            margin-bottom: 1.3rem
-        }
-
-        .xp-p strong {
-            color: var(--g2);
-            font-weight: 500
-        }
-
-        .xp-list {
-            list-style: none;
-            margin-bottom: 1.5rem
-        }
-
-        .xp-list li {
-            position: relative;
-            padding: .52rem 0 .52rem 1.5rem;
-            font-size: .87rem;
-            color: var(--t2);
-            line-height: 1.75;
-            border-bottom: .5px solid var(--ln)
-        }
-
-        .xp-list li:last-child {
-            border-bottom: none
-        }
-
-        .xp-list li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: .95rem;
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            border: .5px solid var(--g3);
-            background: rgba(212, 168, 67, .15)
-        }
-
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: .4rem;
-            margin-top: 1.5rem
-        }
-
-        .tg {
-            padding: .2rem .75rem;
-            background: var(--s2);
-            border: .5px solid var(--ln);
-            font-size: .62rem;
-            color: var(--t3);
-            letter-spacing: .08em
-        }
-
-        /* ══ ACHIEVEMENTS ══ */
-        #achievements {
-            background: var(--bg2)
-        }
-
-        .ach-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1px;
-            background: var(--ln);
-            border: .5px solid var(--ln2)
-        }
-
-        .ach-card {
-            background: var(--bg2);
-            padding: 3.5rem 3rem;
-            position: relative;
-            overflow: hidden;
-            transition: background .4s, transform .3s
-        }
-
-        .ach-card:hover {
-            background: var(--s1);
-            transform: translateY(-2px)
-        }
-
-        /* glow on hover */
-        .ach-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 30% 30%, rgba(212, 168, 67, .06), transparent 70%);
-            opacity: 0;
-            transition: opacity .5s
-        }
-
-        .ach-card:hover::before {
-            opacity: 1
-        }
-
-        /* top accent line */
-        .ach-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--g3), transparent);
-            transform: scaleX(0);
-            transition: transform .5s cubic-bezier(.16, 1, .3, 1)
-        }
-
-        .ach-card:hover::after {
-            transform: scaleX(1)
-        }
-
-        .ach-num {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 7rem;
-            font-weight: 700;
-            font-style: italic;
-            color: rgba(212, 168, 67, .04);
-            position: absolute;
-            top: -1rem;
-            right: 1rem;
-            line-height: 1;
-            pointer-events: none;
-            user-select: none;
-            transition: color .4s
-        }
-
-        .ach-card:hover .ach-num {
-            color: rgba(212, 168, 67, .07)
-        }
-
-        .ach-ico {
-            width: 54px;
-            height: 54px;
-            border: .5px solid var(--ln2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            margin-bottom: 1.8rem;
-            transition: border-color .3s, background .3s;
-            position: relative;
-            z-index: 1
-        }
-
-        .ach-card:hover .ach-ico {
-            border-color: var(--g3);
-            background: var(--s2)
-        }
-
-        .ach-t {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--t1);
-            margin-bottom: .8rem;
-            position: relative;
-            z-index: 1
-        }
-
-        .ach-d {
-            font-size: .84rem;
-            color: var(--t2);
-            line-height: 1.88;
-            position: relative;
-            z-index: 1
-        }
-
-        /* ══ TOOLKIT ══ */
-        #toolkit {
-            background: var(--bg3)
-        }
-
-        /* marquee */
-        .mq {
-            overflow: hidden;
-            position: relative;
-            margin: 3rem 0
-        }
-
-        .mq::before,
-        .mq::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 130px;
-            z-index: 2
-        }
-
-        .mq::before {
-            left: 0;
-            background: linear-gradient(to right, var(--bg3), transparent)
-        }
-
-        .mq::after {
-            right: 0;
-            background: linear-gradient(to left, var(--bg3), transparent)
-        }
-
-        .mq-track {
-            display: flex;
-            width: max-content;
-            animation: mq 20s linear infinite;
-            gap: 1px
-        }
-
-        .mq-track:hover {
-            animation-play-state: paused
-        }
-
-        @keyframes mq {
-            from {
-                transform: translateX(0)
-            }
-
-            to {
-                transform: translateX(-50%)
-            }
-        }
-
-        .mq-card {
-            flex-shrink: 0;
-            min-width: 230px;
-            background: var(--s1);
-            border: .5px solid var(--ln);
-            padding: 1.5rem 2rem;
-            transition: background .3s, border-color .3s
-        }
-
-        .mq-card:hover {
-            background: var(--s2);
-            border-color: var(--ln2)
-        }
-
-        .mq-name {
-            font-size: .82rem;
-            color: var(--t1);
-            margin-bottom: .25rem
-        }
-
-        .mq-by {
-            font-family: 'DM Mono', monospace;
-            font-size: .54rem;
-            letter-spacing: .14em;
-            text-transform: uppercase;
-            color: var(--g4)
-        }
-
-        /* tools */
-        .tool-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1px;
-            background: var(--ln);
-            border: .5px solid var(--ln2)
-        }
-
-        .tool-card {
-            background: var(--bg3);
-            padding: 2.2rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: .7rem;
-            transition: background .35s;
-            position: relative;
-            overflow: hidden
-        }
-
-        .tool-card::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 0;
-            background: linear-gradient(to top, rgba(212, 168, 67, .06), transparent);
-            transition: height .4s
-        }
-
-        .tool-card:hover {
-            background: var(--s1)
-        }
-
-        .tool-card:hover::before {
-            height: 100%
-        }
-
-        .tc-ico {
-            font-size: 1.8rem;
-            position: relative;
-            z-index: 1
-        }
-
-        .tc-lbl {
-            font-size: .72rem;
-            color: var(--t2);
-            letter-spacing: .05em;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            transition: color .3s
-        }
-
-        .tool-card:hover .tc-lbl {
-            color: var(--g2)
-        }
-
-        /* ══ CONTACT ══ */
-        #contact {
-            background: var(--bg);
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center
-        }
-
-        .contact-wrap {
-            display: grid;
-            grid-template-columns: 1.1fr .9fr;
-            border: .5px solid var(--ln2);
-            margin-top: 1rem;
-            overflow: hidden
-        }
-
-        .c-left {
-            padding: 4.5rem;
-            border-right: .5px solid var(--ln2);
-            position: relative;
-            overflow: hidden
-        }
-
-        .c-left::before {
-            content: '';
-            position: absolute;
-            top: -100px;
-            left: -100px;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(212, 168, 67, .06), transparent 70%);
-            pointer-events: none
-        }
-
-        .c-headline {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-            font-style: italic;
-            font-weight: 400;
-            color: var(--t2);
-            line-height: 1.5;
-            margin-bottom: 2.5rem
-        }
-
-        .c-headline em {
-            color: var(--g2)
-        }
-
-        .c-email {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1rem, 1.8vw, 1.4rem);
-            color: var(--t1);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: .8rem;
-            padding-bottom: 1.5rem;
-            margin-bottom: 1.5rem;
-            border-bottom: .5px solid var(--ln);
-            transition: color .3s
-        }
-
-        .c-email:hover {
-            color: var(--g2)
-        }
-
-        .c-list {
-            list-style: none
-        }
-
-        .c-list li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: .85rem 0;
-            border-bottom: .5px solid var(--ln)
-        }
-
-        .c-list li:last-child {
-            border-bottom: none
-        }
-
-        .c-key {
-            font-family: 'DM Mono', monospace;
-            font-size: .54rem;
-            letter-spacing: .2em;
-            text-transform: uppercase;
-            color: var(--t4)
-        }
-
-        .c-val {
-            font-size: .84rem;
-            color: var(--t2)
-        }
-
-        .c-val a {
-            color: inherit;
-            text-decoration: none;
-            transition: color .3s
-        }
-
-        .c-val a:hover {
-            color: var(--g2)
-        }
-
-        .c-avail {
-            color: var(--g1);
-            position: relative;
-            padding-left: 14px
-        }
-
-        .c-avail::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 6px;
-            height: 6px;
-            background: var(--g1);
-            border-radius: 50%;
-            animation: blink 2s ease-in-out infinite
-        }
-
-        @keyframes blink {
-
-            0%,
-            100% {
-                opacity: 1;
-                box-shadow: 0 0 0 0 rgba(212, 168, 67, .4)
-            }
-
-            50% {
-                opacity: .7;
-                box-shadow: 0 0 0 5px rgba(212, 168, 67, 0)
-            }
-        }
-
-        .c-right {
-            padding: 4.5rem;
-            background: var(--s1)
-        }
-
-        .cf-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.7rem;
-            font-weight: 700;
-            margin-bottom: 2.5rem
-        }
-
-        .cf-title em {
-            font-style: italic;
-            color: var(--g2)
-        }
-
-        .cf-field {
-            margin-bottom: 1.8rem
-        }
-
-        .cf-field label {
-            display: block;
-            font-family: 'DM Mono', monospace;
-            font-size: .54rem;
-            letter-spacing: .2em;
-            text-transform: uppercase;
-            color: var(--t4);
-            margin-bottom: .65rem
-        }
-
-        .cf-field input,
-        .cf-field textarea {
-            display: block;
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: .5px solid var(--ln2);
-            color: var(--t1);
-            font-family: 'Syne', sans-serif;
-            font-size: .92rem;
-            padding: .65rem 0;
-            outline: none;
-            transition: border-color .35s;
-            resize: none
-        }
-
-        .cf-field input::placeholder,
-        .cf-field textarea::placeholder {
-            color: var(--t4)
-        }
-
-        .cf-field input:focus,
-        .cf-field textarea:focus {
-            border-color: var(--g1)
-        }
-
-        .cf-field textarea {
-            height: 96px
-        }
-
-        .cf-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: .8rem;
-            padding: 1.05rem 2.6rem;
-            background: linear-gradient(135deg, var(--g1), var(--g3));
-            color: #060504;
-            font-family: 'Syne', sans-serif;
-            font-size: .68rem;
-            font-weight: 700;
-            letter-spacing: .2em;
-            text-transform: uppercase;
-            border: none;
-            cursor: pointer;
-            transition: all .35s;
-            position: relative;
-            overflow: hidden;
-            margin-top: .5rem
-        }
-
-        .cf-btn::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--g2), var(--g1));
-            opacity: 0;
-            transition: opacity .4s
-        }
-
-        .cf-btn:hover::after {
-            opacity: 1
-        }
-
-        .cf-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(212, 168, 67, .2)
-        }
-
-        .cf-btn span {
-            position: relative;
-            z-index: 1
-        }
-
-        /* ══ FOOTER ══ */
-        footer {
-            background: var(--bg4);
-            border-top: .5px solid var(--ln);
-            padding: 2.5rem 5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center
-        }
-
-        footer p {
-            font-family: 'DM Mono', monospace;
-            font-size: .56rem;
-            color: var(--t4);
-            letter-spacing: .1em
-        }
-
-        .footer-dot {
-            display: inline-block;
-            width: 4px;
-            height: 4px;
-            background: var(--g4);
-            border-radius: 50%;
-            margin: 0 .5rem;
-            vertical-align: middle
-        }
-
-        /* ══ REVEAL ANIMATIONS ══ */
-        .rv,
-        .rvL,
-        .rvR {
-            opacity: 0;
-            transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1)
-        }
-
-        .rv {
-            transform: translateY(40px)
-        }
-
-        .rvL {
-            transform: translateX(-40px)
-        }
-
-        .rvR {
-            transform: translateX(40px)
-        }
-
-        .rv.in,
-        .rvL.in,
-        .rvR.in {
-            opacity: 1;
-            transform: none
-        }
-
-        .d1 {
-            transition-delay: .1s
-        }
-
-        .d2 {
-            transition-delay: .2s
-        }
-
-        .d3 {
-            transition-delay: .3s
-        }
-
-        .d4 {
-            transition-delay: .4s
-        }
-
-        /* ══ KEYFRAMES ══ */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px)
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
-        }
-
-        @keyframes fadeI {
-            from {
-                opacity: 0
-            }
-
-            to {
-                opacity: 1
-            }
-        }
-
-        /* ══ GLASS CARD ══ */
-        .glass {
-            background: rgba(26, 21, 16, .6);
-            backdrop-filter: blur(12px);
-            border: .5px solid var(--ln2)
-        }
-
-        /* ══ RESPONSIVE ══ */
-        @media(max-width:960px) {
-            nav {
-                padding: 1.1rem 1.5rem
-            }
-
-            section {
-                padding: 5rem 1.5rem
-            }
-
-            #hero {
-                padding: 0 1.5rem;
-                padding-bottom: 120px
-            }
-
-            .hero-rings {
-                display: none
-            }
-
-            .hero-stats {
-                position: static;
-                flex-wrap: wrap;
-                margin-top: 3rem
-            }
-
-            .hstat {
-                flex: 1 1 50%
-            }
-
-            .scroll-hint {
-                display: none
-            }
-
-            .about-wrap,
-            .xp-wrap,
-            .contact-wrap {
-                grid-template-columns: 1fr
-            }
-
-            .about-left {
-                padding-right: 0;
-                border-right: none;
-                border-bottom: .5px solid var(--ln);
-                padding-bottom: 3rem;
-                margin-bottom: 3rem
-            }
-
-            .about-right {
-                padding-left: 0
-            }
-
-            .kpi-row {
-                grid-template-columns: repeat(2, 1fr)
-            }
-
-            .xp-side {
-                border-right: none;
-                border-bottom: .5px solid var(--ln2);
-                display: flex;
-                overflow-x: auto
-            }
-
-            .xt {
-                min-width: 180px;
-                border-bottom: none;
-                border-right: .5px solid var(--ln)
-            }
-
-            .xp-main {
-                min-height: auto
-            }
-
-            .ach-grid {
-                grid-template-columns: 1fr
-            }
-
-            .tool-grid {
-                grid-template-columns: repeat(2, 1fr)
-            }
-
-            .c-left {
-                border-right: none;
-                border-bottom: .5px solid var(--ln2)
-            }
-
-            footer {
-                flex-direction: column;
-                gap: .6rem;
-                text-align: center;
-                padding: 2rem 1.5rem
-            }
-
-            body {
-                cursor: auto
-            }
-
-            #cd,
-            #cr {
-                display: none
-            }
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Nitesh Pal — Junior Planning Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --gold:#C8A951;--gold2:#E8C96A;--gold3:#9A7020;--gold4:#5A3A08;
+  --bg:#050403;--bg2:#090705;--bg3:#0D0A06;--bg4:#12100A;
+  --card:#171210;--card2:#1E1810;--card3:#262018;
+  --txt:#EDE5CC;--txt2:#8A7C65;--txt3:#484030;--txt4:#1C1810;
+  --lna:rgba(200,169,81,.07);--lnb:rgba(200,169,81,.17);--lnc:rgba(200,169,81,.33);
+}
+body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;line-height:1.7}
+::selection{background:rgba(200,169,81,.2);color:var(--gold2)}
+
+/* ══ CURSOR ══ */
+#cd,#cr{position:fixed;border-radius:50%;pointer-events:none;z-index:9999;will-change:transform;top:0;left:0}
+#cd{width:5px;height:5px;background:var(--gold2);box-shadow:0 0 8px var(--gold);margin:-2.5px 0 0 -2.5px}
+#cr{width:32px;height:32px;border:1px solid rgba(200,169,81,.35);margin:-16px 0 0 -16px;transition:width .2s,height .2s,margin .2s,border-color .2s}
+body.hov #cr{width:46px;height:46px;margin:-23px 0 0 -23px;border-color:rgba(200,169,81,.65)}
+
+/* ══ BG CANVAS ══ */
+#bgc{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ══ NAV ══ */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:1.2rem 5rem;display:flex;justify-content:space-between;align-items:center;transition:all .5s}
+nav.on{background:rgba(5,4,3,.95);backdrop-filter:blur(22px);border-bottom:.5px solid var(--lnb)}
+.n-logo{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--gold2);text-decoration:none;letter-spacing:.08em}
+.n-logo span{color:var(--gold4);font-style:italic}
+.n-links{display:flex;gap:2.8rem;list-style:none}
+.n-links a{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--txt3);text-decoration:none;transition:color .3s;position:relative;padding-bottom:3px}
+.n-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:.5px;background:var(--gold);transition:width .32s}
+.n-links a:hover{color:var(--gold2)}.n-links a:hover::after{width:100%}
+
+/* ══ HERO ══ */
+#hero{min-height:100vh;position:relative;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:7rem 5rem 9rem;gap:4rem;overflow:hidden}
+
+/* --- Gantt --- */
+.hero-visual{position:relative;z-index:2}
+.gantt-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold4);margin-bottom:1.2rem;display:flex;align-items:center;gap:.7rem}
+.gantt-eyebrow::before{content:'';width:22px;height:.5px;background:var(--gold4)}
+.gantt-wrap{border:.5px solid var(--lnb);background:var(--card);overflow:hidden;box-shadow:0 0 60px rgba(200,169,81,.04)}
+.g-head{display:grid;grid-template-columns:130px 1fr;border-bottom:.5px solid var(--lnb);background:var(--card2)}
+.g-head-task{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--txt3);padding:.65rem .9rem;border-right:.5px solid var(--lnb)}
+.g-head-cols{display:flex;padding:.65rem 0}
+.g-col{flex:1;font-family:'JetBrains Mono',monospace;font-size:.46rem;letter-spacing:.1em;color:var(--txt4);text-align:center;text-transform:uppercase}
+.g-row{display:grid;grid-template-columns:130px 1fr;align-items:center;border-bottom:.5px solid var(--lna);min-height:34px}
+.g-row:last-child{border-bottom:none}
+.g-name{font-family:'JetBrains Mono',monospace;font-size:.53rem;color:var(--txt2);padding:.45rem .9rem;border-right:.5px solid var(--lna);letter-spacing:.05em;white-space:nowrap}
+.g-track{position:relative;height:34px;padding:0 5px}
+.g-bar{position:absolute;top:50%;transform:translateY(-50%);height:13px;width:0;opacity:0;background:linear-gradient(90deg,var(--gold4),var(--gold));transition:width 1.3s cubic-bezier(.16,1,.3,1),opacity .25s}
+.g-bar.lit{opacity:1}
+.g-bar-txt{position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-family:'JetBrains Mono',monospace;font-size:.42rem;color:rgba(5,4,3,.88);font-weight:400;white-space:nowrap;opacity:0;transition:opacity .3s .9s}
+.g-bar.lit .g-bar-txt{opacity:1}
+.g-dot{position:absolute;right:-5px;top:50%;transform:translateY(-50%);width:10px;height:10px;background:var(--gold2);border-radius:50%;box-shadow:0 0 10px var(--gold);opacity:0;transition:opacity .3s 1.5s}
+.g-bar.lit .g-dot{opacity:1}
+
+/* progress bar under gantt */
+.gantt-progress{margin-top:1px;height:3px;background:var(--card2);position:relative;overflow:hidden}
+.gantt-progress-fill{position:absolute;left:0;top:0;height:100%;width:0;background:linear-gradient(90deg,var(--gold4),var(--gold2));transition:width 2s 1s cubic-bezier(.16,1,.3,1)}
+.gantt-progress.lit .gantt-progress-fill{width:68%}
+
+/* legend */
+.g-legend{display:flex;gap:1.4rem;margin-top:.8rem;padding:.6rem .9rem;border:.5px solid var(--lna);background:var(--card)}
+.g-leg-item{display:flex;align-items:center;gap:.4rem}
+.g-leg-bar{width:14px;height:3px}
+.g-leg-txt{font-family:'JetBrains Mono',monospace;font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3)}
+
+/* --- Hero text --- */
+.hero-text{position:relative;z-index:2}
+.h-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold3);display:flex;align-items:center;gap:.8rem;margin-bottom:1.8rem;opacity:0;animation:fadeUp .9s .2s both}
+.h-eyebrow::before{content:'';width:28px;height:.5px;background:var(--gold3);flex-shrink:0}
+.h-name{font-family:'Cormorant Garamond',serif;font-size:clamp(3.8rem,8vw,8rem);font-weight:900;line-height:.9;letter-spacing:-.02em;overflow:hidden;margin-bottom:.9rem}
+.h-ln{display:block;opacity:0;transform:translateY(108%);animation:lineUp 1s cubic-bezier(.16,1,.3,1) both}
+.h-ln:nth-child(1){animation-delay:.28s}
+.h-ln:nth-child(2){font-style:italic;background:linear-gradient(120deg,var(--gold2) 0%,var(--gold) 50%,var(--gold2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:lineUp 1s .44s cubic-bezier(.16,1,.3,1) both,shimmer 3.8s 1.6s ease-in-out infinite}
+@keyframes shimmer{0%,100%{background-position:0%}50%{background-position:100%}}
+.h-role-badge{display:inline-flex;align-items:center;gap:.6rem;padding:.35rem 1rem;border:.5px solid var(--lnc);font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;background:rgba(200,169,81,.04);opacity:0;animation:fadeUp .9s .75s both}
+.h-role-badge::before{content:'';width:6px;height:6px;background:var(--gold);border-radius:50%;box-shadow:0 0 8px var(--gold);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.h-bio{font-size:.9rem;color:var(--txt2);line-height:1.95;padding-left:1.2rem;border-left:2px solid var(--gold4);max-width:420px;margin-bottom:2.5rem;opacity:0;animation:fadeUp .9s .95s both}
+.h-bio b{color:var(--gold2);font-weight:500}
+.h-btns{display:flex;gap:.9rem;flex-wrap:wrap;opacity:0;animation:fadeUp .9s 1.15s both}
+
+/* Buttons */
+.btn-g{display:inline-flex;align-items:center;gap:.6rem;padding:.88rem 2.1rem;background:var(--gold);color:var(--bg);font-size:.65rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;position:relative;overflow:hidden;transition:transform .25s,box-shadow .3s}
+.btn-g::before{content:'';position:absolute;inset:0;background:var(--gold2);transform:translateX(-102%);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.btn-g:hover{transform:translateY(-2px);box-shadow:0 10px 34px rgba(200,169,81,.22)}
+.btn-g:hover::before{transform:translateX(0)}
+.btn-g span{position:relative;z-index:1}
+.btn-o{display:inline-flex;align-items:center;gap:.6rem;padding:.88rem 2.1rem;border:.5px solid var(--lnc);color:var(--gold);font-size:.65rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;transition:all .35s}
+.btn-o:hover{border-color:var(--gold);background:rgba(200,169,81,.05);color:var(--gold2);transform:translateY(-2px)}
+
+/* Stats bar */
+.h-statsbar{position:absolute;bottom:0;left:0;right:0;display:grid;grid-template-columns:repeat(5,1fr);border-top:.5px solid var(--lnb);z-index:2;opacity:0;animation:fadeUp .8s 1.5s both}
+.hst{padding:1.3rem 1.2rem;border-right:.5px solid var(--lna);text-align:center;background:rgba(5,4,3,.72);backdrop-filter:blur(10px);transition:background .3s;cursor:default}
+.hst:last-child{border-right:none}
+.hst:hover{background:rgba(20,16,10,.85)}
+.hst-v{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:700;color:var(--gold2);line-height:1;margin-bottom:.3rem}
+.hst-l{font-family:'JetBrains Mono',monospace;font-size:.46rem;letter-spacing:.16em;text-transform:uppercase;color:var(--txt3)}
+
+/* scroll */
+.h-scroll{position:absolute;right:5rem;bottom:4.5rem;z-index:2;display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:fadeIn 1s 2s both}
+.h-scroll span{font-family:'JetBrains Mono',monospace;font-size:.46rem;letter-spacing:.2em;text-transform:uppercase;color:var(--txt4);writing-mode:vertical-rl}
+.sc-ln{width:.5px;height:48px;background:linear-gradient(to bottom,var(--gold4),transparent);animation:scpulse 2.2s ease-in-out infinite}
+@keyframes scpulse{0%,100%{opacity:.2;transform:scaleY(.5) translateY(-6px)}50%{opacity:1;transform:scaleY(1) translateY(0)}}
+
+/* ══ SECTIONS ══ */
+section{padding:7rem 5rem;position:relative}
+.s-ey{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold4);display:flex;align-items:center;gap:.7rem;margin-bottom:.9rem}
+.s-ey::before{content:'';width:18px;height:.5px;background:var(--gold4)}
+.s-h{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4vw,3.6rem);font-weight:700;line-height:1.05;color:var(--txt)}
+.s-h em{font-style:italic;color:var(--gold2)}
+.s-sub{font-size:.87rem;color:var(--txt3);margin-top:.4rem;max-width:500px}
+.s-top{margin-bottom:4rem}
+
+/* ══ ABOUT ══ */
+#about{background:var(--bg2)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:.5px solid var(--lnb)}
+.al{padding:3.5rem;border-right:.5px solid var(--lnb)}
+.ar{padding:3.5rem}
+.ap{font-size:.92rem;color:var(--txt2);line-height:2;margin-bottom:1.5rem}
+.ap b{color:var(--gold2);font-weight:500}
+
+/* "Why Hire Me" callout */
+.why-box{background:var(--card);border:.5px solid var(--lnb);padding:1.8rem;margin-top:2rem;position:relative;overflow:hidden}
+.why-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold3),transparent)}
+.why-title{font-family:'JetBrains Mono',monospace;font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold3);margin-bottom:1rem}
+.why-list{list-style:none}
+.why-list li{position:relative;padding:.4rem 0 .4rem 1.2rem;font-size:.84rem;color:var(--txt2);line-height:1.75}
+.why-list li::before{content:'→';position:absolute;left:0;color:var(--gold3);font-size:.7rem}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--lna);border:.5px solid var(--lnb);margin-top:2.5rem}
+.kbox{background:var(--bg2);padding:1.5rem .8rem;text-align:center;transition:background .3s;cursor:default}
+.kbox:hover{background:var(--card)}
+.kv{font-family:'Cormorant Garamond',serif;font-size:2.1rem;font-weight:700;color:var(--gold2);line-height:1;margin-bottom:.35rem}
+.kl{font-family:'JetBrains Mono',monospace;font-size:.46rem;letter-spacing:.16em;text-transform:uppercase;color:var(--txt3)}
+
+/* skill chips */
+.sk-g{margin-bottom:1.8rem}
+.sk-t{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold4);margin-bottom:.8rem;display:flex;align-items:center;gap:.6rem}
+.sk-t::after{content:'';flex:1;height:.5px;background:var(--lnb)}
+.chips{display:flex;flex-wrap:wrap;gap:.38rem}
+.chip{padding:.24rem .78rem;border:.5px solid var(--lna);font-size:.67rem;color:var(--txt2);background:var(--card);transition:all .3s;letter-spacing:.03em;cursor:default}
+.chip:hover{border-color:var(--gold3);color:var(--gold2);background:var(--card2);transform:translateY(-1px)}
+
+/* detailed skill table */
+.skill-table{margin-top:2rem;border:.5px solid var(--lnb)}
+.strow{display:grid;grid-template-columns:140px 1fr auto;align-items:center;gap:0;border-bottom:.5px solid var(--lna);padding:.7rem 1rem}
+.strow:last-child{border-bottom:none}
+.strow:nth-child(odd){background:rgba(200,169,81,.015)}
+.st-name{font-size:.74rem;color:var(--txt2);letter-spacing:.03em}
+.st-bar{position:relative;height:.5px;background:var(--lnb);margin:0 1rem}
+.st-fill{position:absolute;left:0;top:0;height:100%;background:linear-gradient(to right,var(--gold4),var(--gold2));width:0;transition:width 1.6s cubic-bezier(.16,1,.3,1)}
+.st-fill::after{content:'';position:absolute;right:-3px;top:-3px;width:7px;height:7px;border-radius:50%;background:var(--gold2);box-shadow:0 0 8px var(--gold);opacity:0;transition:opacity .3s 1.6s}
+.st-fill.glow::after{opacity:1}
+.st-lvl{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold4);white-space:nowrap}
+
+/* ══ EXPERIENCE ══ */
+#experience{background:var(--bg3)}
+.xp-wrap{display:grid;grid-template-columns:260px 1fr;border:.5px solid var(--lnb)}
+.xp-side{border-right:.5px solid var(--lnb);background:var(--card)}
+.xtb{display:block;width:100%;padding:1.7rem 1.8rem;background:transparent;border:none;text-align:left;cursor:pointer;border-bottom:.5px solid var(--lna);position:relative;overflow:hidden;font-family:'Inter',sans-serif;transition:background .3s}
+.xtb:last-child{border-bottom:none}
+.xtb-bar{position:absolute;left:0;top:0;bottom:0;width:2.5px;background:linear-gradient(to bottom,var(--gold2),var(--gold));transform:scaleY(0);transition:transform .38s cubic-bezier(.16,1,.3,1);transform-origin:center}
+.xtb.on,.xtb:hover{background:var(--card2)}.xtb.on .xtb-bar,.xtb:hover .xtb-bar{transform:scaleY(1)}
+.xtb-per{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.16em;color:var(--gold3);text-transform:uppercase;margin-bottom:.38rem}
+.xtb-role{font-size:.84rem;color:var(--txt);margin-bottom:.18rem;font-weight:400}
+.xtb-co{font-size:.67rem;color:var(--txt3)}
+.xp-body{position:relative;min-height:540px;overflow:hidden}
+.xp-pane{position:absolute;inset:0;padding:3.5rem;opacity:0;transform:translateX(26px);transition:opacity .48s cubic-bezier(.16,1,.3,1),transform .48s cubic-bezier(.16,1,.3,1);pointer-events:none;overflow-y:auto}
+.xp-pane.on{opacity:1;transform:translateX(0);position:relative;pointer-events:auto}
+.xp-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.26rem .88rem;border:.5px solid var(--lnc);font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.14em;color:var(--gold3);text-transform:uppercase;margin-bottom:1.4rem;background:rgba(200,169,81,.04)}
+.xp-badge::before{content:'';width:5px;height:5px;background:var(--gold);border-radius:50%;box-shadow:0 0 7px var(--gold);animation:blink 2s ease-in-out infinite}
+.xp-h{font-family:'Cormorant Garamond',serif;font-size:1.95rem;font-weight:700;line-height:1.15;margin-bottom:.4rem}
+.xp-h em{font-style:italic;color:var(--gold2)}
+.xp-meta{font-size:.73rem;color:var(--gold3);letter-spacing:.07em;padding-bottom:1.3rem;margin-bottom:1.6rem;border-bottom:.5px solid var(--lna)}
+.xp-p{font-size:.87rem;color:var(--txt2);line-height:1.95;margin-bottom:1.2rem}
+.xp-p b{color:var(--gold2);font-weight:500}
+
+/* Detailed task cards inside experience */
+.task-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--lna);margin-bottom:1.5rem}
+.task-card{background:var(--card);padding:1.2rem;transition:background .3s}
+.task-card:hover{background:var(--card2)}
+.tc-ico{font-size:1rem;margin-bottom:.5rem;display:block}
+.tc-title{font-size:.76rem;color:var(--gold2);font-weight:500;margin-bottom:.35rem;letter-spacing:.03em}
+.tc-desc{font-size:.75rem;color:var(--txt2);line-height:1.7}
+
+.xp-ul{list-style:none;margin-bottom:1.4rem}
+.xp-ul li{position:relative;padding:.48rem 0 .48rem 1.3rem;font-size:.84rem;color:var(--txt2);line-height:1.75;border-bottom:.5px solid var(--lna)}
+.xp-ul li:last-child{border-bottom:none}
+.xp-ul li::before{content:'';position:absolute;left:0;top:.9rem;width:4px;height:4px;border:.5px solid var(--gold3);border-radius:50%;background:rgba(200,169,81,.1)}
+.xp-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:1.3rem}
+.xt{padding:.17rem .68rem;background:var(--card2);border:.5px solid var(--lna);font-size:.58rem;color:var(--txt3);letter-spacing:.08em;font-family:'JetBrains Mono',monospace}
+
+/* ══ P6 SPOTLIGHT ══ */
+#p6{background:var(--bg2)}
+.p6-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--lna);border:.5px solid var(--lnb);margin-top:3rem}
+.p6-card{background:var(--bg2);padding:2.5rem 2.2rem;position:relative;overflow:hidden;transition:background .35s;cursor:default}
+.p6-card:hover{background:var(--card)}
+.p6-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold3),transparent);transform:scaleX(0);transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.p6-card:hover::after{transform:scaleX(1)}
+.p6-n{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold4);margin-bottom:1.2rem}
+.p6-icon{font-size:1.5rem;margin-bottom:1rem;display:block}
+.p6-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--txt);margin-bottom:.6rem}
+.p6-desc{font-size:.8rem;color:var(--txt2);line-height:1.82}
+.p6-pills{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.9rem}
+.p6-pill{padding:.18rem .65rem;border:.5px solid var(--lna);font-size:.62rem;color:var(--txt3);font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+
+/* ══ ACHIEVEMENTS ══ */
+#achievements{background:var(--bg3)}
+.ach-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--lna);border:.5px solid var(--lnb);margin-top:3rem}
+.ach-card{background:var(--bg3);padding:3rem 2.5rem;position:relative;overflow:hidden;transition:background .4s;cursor:default}
+.ach-card:hover{background:var(--card)}
+.ach-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(200,169,81,.06),transparent 65%);opacity:0;transition:opacity .5s}
+.ach-card:hover::before{opacity:1}
+.ach-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold3),transparent);transform:translateX(-100%);transition:transform .65s cubic-bezier(.16,1,.3,1)}
+.ach-card:hover::after{transform:translateX(0)}
+.ach-bg{position:absolute;right:1rem;top:.2rem;font-family:'Cormorant Garamond',serif;font-size:7rem;font-weight:900;font-style:italic;color:rgba(200,169,81,.04);line-height:1;pointer-events:none;user-select:none;transition:color .4s}
+.ach-card:hover .ach-bg{color:rgba(200,169,81,.07)}
+.ach-ico{width:48px;height:48px;border:.5px solid var(--lnb);display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:1.6rem;position:relative;z-index:1;transition:border-color .3s,background .3s}
+.ach-card:hover .ach-ico{border-color:var(--gold3);background:var(--card2)}
+.ach-t{font-family:'Cormorant Garamond',serif;font-size:1.28rem;font-weight:700;color:var(--txt);margin-bottom:.7rem;position:relative;z-index:1}
+.ach-d{font-size:.81rem;color:var(--txt2);line-height:1.86;position:relative;z-index:1}
+
+/* ══ TOOLKIT ══ */
+#toolkit{background:var(--bg2)}
+.mq-outer{overflow:hidden;position:relative;margin:2.5rem 0}
+.mq-outer::before,.mq-outer::after{content:'';position:absolute;top:0;bottom:0;width:110px;z-index:2}
+.mq-outer::before{left:0;background:linear-gradient(to right,var(--bg2),transparent)}
+.mq-outer::after{right:0;background:linear-gradient(to left,var(--bg2),transparent)}
+.mq-track{display:flex;gap:1px;width:max-content;animation:mq 22s linear infinite}
+.mq-track:hover{animation-play-state:paused}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.mq-card{flex-shrink:0;min-width:215px;background:var(--card);border:.5px solid var(--lna);padding:1.3rem 1.8rem;transition:background .3s,border-color .3s}
+.mq-card:hover{background:var(--card2);border-color:var(--lnb)}
+.mq-name{font-size:.8rem;color:var(--txt);margin-bottom:.22rem}
+.mq-by{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold4)}
+.tool-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--lna);border:.5px solid var(--lnb)}
+.t-brick{background:var(--bg2);padding:2rem 1.2rem;display:flex;flex-direction:column;align-items:center;gap:.6rem;transition:background .3s;position:relative;overflow:hidden;cursor:default}
+.t-brick::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold3),transparent);transform:scaleX(0);transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.t-brick:hover{background:var(--card)}.t-brick:hover::before{transform:scaleX(1)}
+.t-ico{font-size:1.6rem;position:relative;z-index:1}
+.t-lbl{font-size:.68rem;color:var(--txt2);letter-spacing:.05em;text-align:center;position:relative;z-index:1;transition:color .3s}
+.t-brick:hover .t-lbl{color:var(--gold2)}
+
+/* ══ CONTACT ══ */
+#contact{background:var(--bg)}
+.c-grid{display:grid;grid-template-columns:1.1fr .9fr;border:.5px solid var(--lnb);margin-top:3rem;overflow:hidden}
+.c-left{padding:4rem;border-right:.5px solid var(--lnb);position:relative;overflow:hidden}
+.c-left::before{content:'';position:absolute;top:-120px;left:-120px;width:360px;height:360px;background:radial-gradient(circle,rgba(200,169,81,.05),transparent 70%);pointer-events:none}
+.c-tag{font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,2vw,1.85rem);font-style:italic;font-weight:400;color:var(--txt2);line-height:1.5;margin-bottom:2.3rem}
+.c-tag em{color:var(--gold2)}
+.c-email{font-family:'Cormorant Garamond',serif;font-size:clamp(.9rem,1.5vw,1.25rem);color:var(--txt);text-decoration:none;display:flex;align-items:center;gap:.7rem;padding-bottom:1.3rem;margin-bottom:1.3rem;border-bottom:.5px solid var(--lna);transition:color .3s}
+.c-email:hover{color:var(--gold2)}
+.c-list{list-style:none}
+.c-list li{display:flex;justify-content:space-between;align-items:center;padding:.82rem 0;border-bottom:.5px solid var(--lna)}
+.c-list li:last-child{border-bottom:none}
+.ck{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--txt4)}
+.cv{font-size:.82rem;color:var(--txt2)}
+.cv a{color:inherit;text-decoration:none;transition:color .3s}
+.cv a:hover{color:var(--gold2)}
+.cv-avail{color:var(--gold);display:flex;align-items:center;gap:.5rem}
+.cv-avail::before{content:'';width:5px;height:5px;background:var(--gold);border-radius:50%;animation:blink 2s ease-in-out infinite;box-shadow:0 0 7px var(--gold)}
+.c-right{padding:4rem;background:var(--card)}
+.cf-t{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:700;margin-bottom:2.3rem}
+.cf-t em{font-style:italic;color:var(--gold2)}
+.cf-f{margin-bottom:1.7rem}
+.cf-f label{display:block;font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--txt3);margin-bottom:.58rem}
+.cf-f input,.cf-f textarea{display:block;width:100%;background:transparent;border:none;border-bottom:.5px solid var(--lnb);color:var(--txt);font-family:'Inter',sans-serif;font-size:.88rem;padding:.62rem 0;outline:none;transition:border-color .32s;resize:none}
+.cf-f input::placeholder,.cf-f textarea::placeholder{color:var(--txt4)}
+.cf-f input:focus,.cf-f textarea:focus{border-color:var(--gold)}
+.cf-f textarea{height:84px}
+.cf-btn{display:inline-flex;align-items:center;gap:.7rem;padding:1rem 2.4rem;background:linear-gradient(135deg,var(--gold),var(--gold3));color:var(--bg);font-family:'Inter',sans-serif;font-size:.64rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;border:none;cursor:pointer;transition:all .32s;position:relative;overflow:hidden;margin-top:.4rem}
+.cf-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--gold2),var(--gold));opacity:0;transition:opacity .38s}
+.cf-btn:hover::after{opacity:1}
+.cf-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(200,169,81,.2)}
+.cf-btn span{position:relative;z-index:1}
+
+/* ══ FOOTER ══ */
+footer{background:var(--bg4);border-top:.5px solid var(--lna);padding:2.2rem 5rem;display:flex;justify-content:space-between;align-items:center}
+footer p{font-family:'JetBrains Mono',monospace;font-size:.52rem;color:var(--txt4);letter-spacing:.1em}
+.fd{display:inline-block;width:3px;height:3px;background:var(--gold4);border-radius:50%;vertical-align:middle;margin:0 .45rem}
+
+/* ══ REVEAL ══ */
+.rv{opacity:0;transform:translateY(34px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1)}
+.rvL{opacity:0;transform:translateX(-34px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1)}
+.rvR{opacity:0;transform:translateX(34px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1)}
+.rv.in,.rvL.in,.rvR.in{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+@keyframes lineUp{from{opacity:0;transform:translateY(108%)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:960px){
+  nav{padding:1rem 1.5rem}
+  section{padding:5rem 1.5rem}
+  #hero{grid-template-columns:1fr;padding:7rem 1.5rem 8.5rem;gap:2.5rem}
+  .hero-visual{order:-1}
+  .h-statsbar{grid-template-columns:repeat(3,1fr)}
+  .h-scroll{display:none}
+  .about-grid,.xp-wrap,.c-grid{grid-template-columns:1fr}
+  .al{border-right:none;border-bottom:.5px solid var(--lnb)}
+  .xp-side{border-right:none;border-bottom:.5px solid var(--lnb);display:flex;overflow-x:auto}
+  .xtb{min-width:170px;border-bottom:none;border-right:.5px solid var(--lna)}
+  .xp-body{min-height:auto}
+  .ach-grid,.p6-grid,.task-grid{grid-template-columns:1fr}
+  .tool-grid{grid-template-columns:repeat(2,1fr)}
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .c-left{border-right:none;border-bottom:.5px solid var(--lnb)}
+  footer{flex-direction:column;gap:.5rem;text-align:center;padding:2rem 1.5rem}
+  body{cursor:auto}#cd,#cr{display:none}
+}
+</style>
 </head>
-
 <body>
 
-    <canvas id="cvs"></canvas>
-    <div id="cd"></div>
-    <div id="cr"></div>
+<canvas id="bgc"></canvas>
+<div id="cd"></div>
+<div id="cr"></div>
 
-    <!-- ══ NAV ══ -->
-    <nav id="nav">
-        <a class="logo" href="#hero">N<em>·</em>PAL</a>
-        <ul class="nav-ul">
-            <li><a href="#about">About</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#achievements">Honours</a></li>
-            <li><a href="#toolkit">Toolkit</a></li>
-            <li><a href="#contact">Contact</a></li>
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <a class="n-logo" href="#hero">N<span>·</span>PAL</a>
+  <ul class="n-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#p6">P6 &amp; Excel</a></li>
+    <li><a href="#achievements">Honours</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+
+  <!-- LEFT: Name -->
+  <div class="hero-text">
+    <p class="h-eyebrow">Junior Planning Engineer · Oil &amp; Gas · Lagos, Nigeria</p>
+    <h1 class="h-name">
+      <span class="h-ln">Nitesh</span>
+      <span class="h-ln">Pal</span>
+    </h1>
+    <div class="h-role-badge">● Junior Planning Engineer · 13 Months Experience</div>
+    <p class="h-bio">
+      B.Tech Gold Medalist turned site mechanical engineer, now building schedules in <b>Lagos, Nigeria</b>. I bring <b>IOCL Panipat Refinery site knowledge</b> to every Primavera P6 schedule I produce — planning from real experience, not just theory.
+    </p>
+    <div class="h-btns">
+      <a href="#experience" class="btn-g"><span>View My Journey →</span></a>
+      <a href="#contact" class="btn-o">Hire Me</a>
+    </div>
+  </div>
+
+  <!-- RIGHT: Animated Gantt -->
+  <div class="hero-visual">
+    <p class="gantt-eyebrow">Live Project Schedule — Primavera P6 View</p>
+    <div class="gantt-wrap">
+      <div class="g-head">
+        <div class="g-head-task">Activity</div>
+        <div class="g-head-cols">
+          <span class="g-col">Jan</span><span class="g-col">Feb</span><span class="g-col">Mar</span>
+          <span class="g-col">Apr</span><span class="g-col">May</span><span class="g-col">Jun</span>
+          <span class="g-col">Jul</span><span class="g-col">Aug</span>
+        </div>
+      </div>
+      <div class="g-row"><div class="g-name">Mob. &amp; Survey</div><div class="g-track"><div class="g-bar" style="left:1%" data-w="14%"><div class="g-bar-txt">Mob.</div></div></div></div>
+      <div class="g-row"><div class="g-name">Baseline Sched.</div><div class="g-track"><div class="g-bar" style="left:10%" data-w="18%"><div class="g-bar-txt">Sched.</div></div></div></div>
+      <div class="g-row"><div class="g-name">Procurement</div><div class="g-track"><div class="g-bar" style="left:14%" data-w="32%"><div class="g-bar-txt">Procurement</div></div></div></div>
+      <div class="g-row"><div class="g-name">Civil Works</div><div class="g-track"><div class="g-bar" style="left:26%" data-w="24%"><div class="g-bar-txt">Civil</div></div></div></div>
+      <div class="g-row"><div class="g-name">Mech. Install.</div><div class="g-track"><div class="g-bar" style="left:42%" data-w="26%"><div class="g-bar-txt">Mech.</div><div class="g-dot"></div></div></div></div>
+      <div class="g-row"><div class="g-name">Piping &amp; Valves</div><div class="g-track"><div class="g-bar" style="left:50%;background:linear-gradient(90deg,#5A3A08,#E8C96A)" data-w="24%"><div class="g-bar-txt">Piping</div></div></div></div>
+      <div class="g-row"><div class="g-name">Commissioning</div><div class="g-track"><div class="g-bar" style="left:68%;background:linear-gradient(90deg,#3A1A02,#C8A951)" data-w="20%"><div class="g-bar-txt">Comm.</div><div class="g-dot"></div></div></div></div>
+    </div>
+    <div class="gantt-progress"><div class="gantt-progress-fill"></div></div>
+    <div class="g-legend">
+      <div class="g-leg-item"><div class="g-leg-bar" style="background:linear-gradient(90deg,#5A3A08,#E8C96A)"></div><span class="g-leg-txt">In Progress</span></div>
+      <div class="g-leg-item"><div class="g-leg-bar" style="background:linear-gradient(90deg,#3A1A02,#C8A951)"></div><span class="g-leg-txt">Critical</span></div>
+      <div class="g-leg-item"><div class="g-leg-bar" style="background:linear-gradient(90deg,#5A3A08,#C8A951)"></div><span class="g-leg-txt">Planned</span></div>
+    </div>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="h-statsbar">
+    <div class="hst"><div class="hst-v" id="hs1">0</div><div class="hst-l">Months Exp.</div></div>
+    <div class="hst"><div class="hst-v">🥇</div><div class="hst-l">Gold Medalist</div></div>
+    <div class="hst"><div class="hst-v" id="hs2">0</div><div class="hst-l">Patent Granted</div></div>
+    <div class="hst"><div class="hst-v" id="hs3">0</div><div class="hst-l">Publications</div></div>
+    <div class="hst"><div class="hst-v">🌍</div><div class="hst-l">Lagos, Nigeria</div></div>
+  </div>
+
+  <div class="h-scroll"><div class="sc-ln"></div><span>Scroll</span></div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="s-top">
+    <div class="s-ey rv">Profile</div>
+    <h2 class="s-h rv">Who I <em>Am</em></h2>
+    <p class="s-sub rv">Honest. Hungry. Site-hardened. 13 months into a long planning career.</p>
+  </div>
+
+  <div class="about-grid">
+    <div class="al rvL">
+      <p class="ap">I am <b>Nitesh Pal</b> — a 23-year-old Junior Planning Engineer from Raebareli, Uttar Pradesh, India, currently working in <b>Lagos, Nigeria</b> with Offshore Infrastructure Ltd. I am early in my career — 13 months of experience — but I bring something most planners at my level don't: <b>real oil &amp; gas site experience</b> at the IOCL Panipat Refinery.</p>
+      <p class="ap">Before I touched Primavera P6, I supervised <b>crude pump Pipe installations</b>, inspected weld joints, erected pipe spools, and managed daily site reports at a live Indian refinery. That site intelligence means my schedules are grounded in reality — not just theory copied from templates.</p>
+      <p class="ap">I graduated as Mechanical Engineer with academic <b>Chancellor's Gold Medalist</b> from CSA University, Kanpur — proving I can learn fast and perform under pressure. I hold a granted <b>patent</b> and have three published research papers. I'm a fast learner, detail-oriented, and committed to growing into a senior planning engineer.</p>
+
+      <!-- Why hire me -->
+      <div class="why-box rv">
+        <div class="why-title">// Why hire a junior with 13 months?</div>
+        <ul class="why-list">
+          <li>Site-first background — I plan what I've physically built</li>
+          <li>Academic top performer — Chancellor's Gold Medalist, University rank 1</li>
+          <li>Eager learner — already using AI tools (ChatGPT, Claude) for efficiency</li>
+          <li>International exposure — deployed to Lagos, Nigeria at 23</li>
+          <li>Patent holder — proven ability to think, create, and deliver</li>
         </ul>
-    </nav>
+      </div>
 
-    <!-- ══ HERO ══ -->
-    <section id="hero">
+      <div class="kpi-row rv">
+        <div class="kbox"><div class="kv" id="k1">0</div><div class="kl">Months Exp.</div></div>
+        <div class="kbox"><div class="kv">🥇</div><div class="kl">Gold Medal</div></div>
+        <div class="kbox"><div class="kv" id="k2">0</div><div class="kl">Patent</div></div>
+        <div class="kbox"><div class="kv" id="k3">0</div><div class="kl">Publications</div></div>
+      </div>
+    </div>
 
-        <!-- Animated rings -->
-        <div class="hero-rings">
-            <div class="ring">
-                <div class="ring-dot"></div>
-            </div>
-            <div class="ring">
-                <div class="ring-dot"></div>
-            </div>
-            <div class="ring">
-                <div class="ring-dot"></div>
-            </div>
-            <div class="ring">
-                <div class="ring-dot"></div>
-            </div>
-            <div class="ring">
-                <div class="ring-dot"></div>
-            </div>
-            <div class="ring-center">
-                <div class="ring-center-txt">PLANNING<br>&amp;<br>MECHANICAL</div>
-            </div>
+    <div class="ar rvR">
+      <div class="sk-g">
+        <div class="sk-t">Planning &amp; Controls</div>
+        <div class="chips">
+          <span class="chip">Primavera P6</span><span class="chip">Advanced Excel</span>
+          <span class="chip">CPM Scheduling</span><span class="chip">Baseline Development</span>
+          <span class="chip">QS Checking</span><span class="chip">Billing Support</span>
+          <span class="chip">S-Curves</span><span class="chip">Look-Ahead Plans</span>
+          <span class="chip">Progress Reports</span><span class="chip">WBS Creation</span>
+          <span class="chip">Resource Loading</span><span class="chip">Float Analysis</span>
         </div>
-
-        <div class="hero-body">
-            <p class="hero-eyebrow">Planning Engineer · Oil &amp; Gas · Lagos, Nigeria</p>
-            <h1 class="hero-h1">
-                <span class="h1-ln">Nitesh</span>
-                <span class="h1-ln">Pal</span>
-            </h1>
-            <p class="hero-role">Mechanical &amp; Planning Engineer · IOCL Site Experience · Patent Holder</p>
-            <p class="hero-desc">
-                From supervising <strong>crude pump installations at IOCL Panipat Refinery</strong> to building master
-                schedules in <strong>Lagos, Nigeria</strong> — I bring seven months of live site experience to every
-                line of schedule I write.
-            </p>
-            <div class="hero-btns">
-                <a href="#experience" class="btn-solid"><span>View My Work →</span></a>
-                <a href="#contact" class="btn-line">Get in Touch</a>
-            </div>
+      </div>
+      <div class="sk-g">
+        <div class="sk-t">Site &amp; Mechanical</div>
+        <div class="chips">
+          <span class="chip">Crude Pump Supervision</span><span class="chip">Welding Inspection</span>
+          <span class="chip">Pipe &amp; Spool Erection</span><span class="chip">Valves &amp; Fittings</span>
+          <span class="chip">HSE Compliance</span><span class="chip">Hydraulic Systems</span>
+          <span class="chip">Daily Site Reports</span><span class="chip">Method Statements</span>
         </div>
-
-        <!-- Stats bar -->
-        <div class="hero-stats">
-            <div class="hstat">
-                <div class="hstat-val" id="ks1">0</div>
-                <div class="hstat-lbl">Years Experience</div>
-            </div>
-            <div class="hstat">
-                <div class="hstat-val">🥇</div>
-                <div class="hstat-lbl">Chancellor's Gold Medal</div>
-            </div>
-            <div class="hstat">
-                <div class="hstat-val" id="ks2">0</div>
-                <div class="hstat-lbl">Patent Granted</div>
-            </div>
-            <div class="hstat">
-                <div class="hstat-val" id="ks3">0</div>
-                <div class="hstat-lbl">Research Publications</div>
-            </div>
-            <div class="hstat">
-                <div class="hstat-val">🌍</div>
-                <div class="hstat-lbl">Lagos, Nigeria</div>
-            </div>
+      </div>
+      <div class="sk-g">
+        <div class="sk-t">Software &amp; Digital</div>
+        <div class="chips">
+          <span class="chip">Primavera P6</span><span class="chip">MS Excel (Advanced)</span>
+          <span class="chip">AutoCAD</span><span class="chip">SolidWorks</span>
+          <span class="chip">Fusion 360</span><span class="chip">ChatGPT</span>
+          <span class="chip">Claude AI</span><span class="chip">MS Office Suite</span>
         </div>
+      </div>
 
-        <div class="scroll-hint">
-            <div class="s-line"></div>
-            <span>Scroll</span>
+      <!-- Detailed skill table -->
+      <div class="skill-table rv">
+        <div class="strow"><span class="st-name">Primavera P6</span><div class="st-bar"><div class="st-fill" data-w="80"></div></div><span class="st-lvl">Proficient</span></div>
+        <div class="strow"><span class="st-name">Advanced Excel</span><div class="st-bar"><div class="st-fill" data-w="85"></div></div><span class="st-lvl">Proficient</span></div>
+        <div class="strow"><span class="st-name">CPM / Scheduling</span><div class="st-bar"><div class="st-fill" data-w="78"></div></div><span class="st-lvl">Proficient</span></div>
+        <div class="strow"><span class="st-name">Site Mech. Knowledge</span><div class="st-bar"><div class="st-fill" data-w="88"></div></div><span class="st-lvl">Strong</span></div>
+        <div class="strow"><span class="st-name">AutoCAD</span><div class="st-bar"><div class="st-fill" data-w="72"></div></div><span class="st-lvl">Working</span></div>
+        <div class="strow"><span class="st-name">QS &amp; Billing</span><div class="st-bar"><div class="st-fill" data-w="74"></div></div><span class="st-lvl">Working</span></div>
+        <div class="strow"><span class="st-name">AI Workflows</span><div class="st-bar"><div class="st-fill" data-w="82"></div></div><span class="st-lvl">Strong</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EXPERIENCE ═══ -->
+<section id="experience">
+  <div class="s-top">
+    <div class="s-ey rv">Career</div>
+    <h2 class="s-h rv">13 Months, <em>Two Countries</em></h2>
+    <p class="s-sub rv">From a live IOCL refinery in India to a Free Trade Zone planning office in Lagos.</p>
+  </div>
+
+  <div class="xp-wrap rv">
+    <div class="xp-side">
+      <button class="xtb on" onclick="xt(this,0)">
+        <div class="xtb-bar"></div>
+        <div class="xtb-per">Dec 2025 – Present</div>
+        <div class="xtb-role">Junior Planning Eng.</div>
+        <div class="xtb-co">Offshore Infra · Lagos</div>
+      </button>
+      <button class="xtb" onclick="xt(this,1)">
+        <div class="xtb-bar"></div>
+        <div class="xtb-per">May – Dec 2025</div>
+        <div class="xtb-role">Mechanical Engineer</div>
+        <div class="xtb-co">IOCL Panipat · India</div>
+      </button>
+      <button class="xtb" onclick="xt(this,2)">
+        <div class="xtb-bar"></div>
+        <div class="xtb-per">Graduated 2025</div>
+        <div class="xtb-role">B.Tech · Gold Medalist</div>
+        <div class="xtb-co">CSA Univ. · Kanpur</div>
+      </button>
+      <button class="xtb" onclick="xt(this,3)">
+        <div class="xtb-bar"></div>
+        <div class="xtb-per">Training</div>
+        <div class="xtb-role">Farm Machinery</div>
+        <div class="xtb-co">NRFMTTI · Hisar</div>
+      </button>
+    </div>
+
+    <div class="xp-body">
+
+      <!-- Pane 0: Planning role -->
+      <div class="xp-pane on">
+        <div class="xp-badge">Current · Lagos, Nigeria</div>
+        <div class="xp-h">Junior Planning <em>Engineer</em></div>
+        <div class="xp-meta">Offshore Infrastructure Ltd. · Free Trade Zone, Lagos, Nigeria · Dec 2025 – Present</div>
+        <p class="xp-p">My first dedicated planning role — and I started it with an advantage: 7 months of live site experience at IOCL Panipat Refinery. Every schedule duration I set, I can justify. Every logic link I create, I understand from the field.</p>
+
+        <div class="task-grid">
+          <div class="task-card"><span class="tc-ico">📅</span><div class="tc-title">Schedule Development</div><div class="tc-desc">Building detailed activity networks in <b>Primavera P6</b> — WBS setup, activity definition, relationships (FS/SS/FF/SF), constraints, and critical path identification</div></div>
+          <div class="task-card"><span class="tc-ico">📊</span><div class="tc-title">Advanced Excel Reporting</div><div class="tc-desc">Producing S-curves, manpower histograms, weekly progress dashboards, and look-ahead schedules using Advanced Excel with formulas, pivot tables, and conditional formatting</div></div>
+          <div class="task-card"><span class="tc-ico">🔢</span><div class="tc-title">QS Checking</div><div class="tc-desc">Verifying quantities against drawings, BOQ, and specifications. Cross-checking measurements and raising queries on discrepancies for billing accuracy</div></div>
+          <div class="task-card"><span class="tc-ico">🧾</span><div class="tc-title">Billing Support</div><div class="tc-desc">Assisting in preparation of primary billing documentation — measurement sheets, RA bills, and progress-linked payment certifications</div></div>
+          <div class="task-card"><span class="tc-ico">🤖</span><div class="tc-title">AI-Enhanced Workflow</div><div class="tc-desc">Using <b>ChatGPT and Claude AI</b> to speed up report drafting, data analysis, and schedule narrative preparation — saving hours per week</div></div>
+          <div class="task-card"><span class="tc-ico">🔗</span><div class="tc-title">Site Coordination</div><div class="tc-desc">Coordinating with site engineers to capture real progress, update as-built schedules, and flag critical path delays before they escalate</div></div>
         </div>
-    </section>
-
-    <!-- ══ ABOUT ══ -->
-    <section id="about">
-        <div class="sec-top rv">
-            <div class="sec-tag">Profile</div>
-            <h2 class="sec-h">Who I <em>Am</em></h2>
-            <p class="sec-sub">Engineer by training. Builder by instinct. Planner by purpose.</p>
+        <div class="xp-tags">
+          <span class="xt">Primavera P6</span><span class="xt">Advanced Excel</span><span class="xt">QS Checking</span>
+          <span class="xt">Billing</span><span class="xt">S-Curves</span><span class="xt">ChatGPT/Claude</span><span class="xt">Lagos, Nigeria</span>
         </div>
+      </div>
 
-        <div class="about-wrap">
-            <div class="about-left rvL">
-                <p class="ap">I am <strong>Nitesh Pal</strong> — a Mechanical and Planning Engineer from Raebareli,
-                    Uttar Pradesh, India, currently deployed in <strong>Lagos, Nigeria</strong>. My career began on the
-                    ground at the <strong>IOCL Panipat Refinery</strong> — supervising crude pump installations,
-                    inspecting weld joints, erecting pipe spools, and enforcing HSE protocols on a live refinery site.
-                </p>
-                <p class="ap">That seven months of site experience is what sets me apart. I don't estimate durations
-                    from manuals — I know them because I've physically done the work. That intelligence drives every
-                    schedule, QS check, and look-ahead plan I produce as a <strong>Planning Engineer at Offshore
-                        Infrastructure Ltd., Lagos</strong>.</p>
-                <p class="ap">Academically I graduated as the <strong>Chancellor's Gold Medalist</strong> from CSA
-                    University of Agriculture &amp; Technology, Kanpur. I hold a granted <strong>patent for a
-                        Multi-Purpose Solar-Based Corn Sheller</strong> backed by three published research papers.</p>
+      <!-- Pane 1: Site role -->
+      <div class="xp-pane">
+        <div class="xp-badge">Foundation · IOCL Panipat</div>
+        <div class="xp-h">Mechanical <em>Engineer</em></div>
+        <div class="xp-meta">Offshore Infrastructure Ltd. · IOCL Panipat Refinery, Haryana, India · May – Dec 2025 (7 months)</div>
+        <p class="xp-p">Deployed on-site at the <b>IOCL Panipat Refinery</b> — one of India's largest. Seven months on the ground in a live, safety-critical oil &amp; gas construction environment. This is what makes me a different kind of planner.</p>
 
-                <div class="kpi-row rv">
-                    <div class="kpi-c">
-                        <div class="kpi-v" id="k1">0</div>
-                        <div class="kpi-l">Years Exp.</div>
-                    </div>
-                    <div class="kpi-c">
-                        <div class="kpi-v">🥇</div>
-                        <div class="kpi-l">Gold Medal</div>
-                    </div>
-                    <div class="kpi-c">
-                        <div class="kpi-v" id="k2">0</div>
-                        <div class="kpi-l">Patent</div>
-                    </div>
-                    <div class="kpi-c">
-                        <div class="kpi-v" id="k3">0</div>
-                        <div class="kpi-l">Publications</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="about-right rvR">
-                <div class="sk-blk">
-                    <div class="sk-head">Planning &amp; Controls</div>
-                    <div class="chips">
-                        <span class="ch">Primavera P6</span><span class="ch">Advanced Excel</span>
-                        <span class="ch">CPM Scheduling</span><span class="ch">QS Checking</span>
-                        <span class="ch">Billing Support</span><span class="ch">S-Curves</span>
-                        <span class="ch">Look-Ahead Plans</span><span class="ch">Progress Reports</span>
-                    </div>
-                </div>
-                <div class="sk-blk">
-                    <div class="sk-head">Site &amp; Mechanical</div>
-                    <div class="chips">
-                        <span class="ch">Crude Pump Supervision</span><span class="ch">Welding Inspection</span>
-                        <span class="ch">Pipe &amp; Spool Erection</span><span class="ch">Valves &amp; Fittings</span>
-                        <span class="ch">HSE Compliance</span><span class="ch">Hydraulic Systems</span>
-                        <span class="ch">Daily Site Reports</span>
-                    </div>
-                </div>
-                <div class="sk-blk">
-                    <div class="sk-head">Software &amp; AI</div>
-                    <div class="chips">
-                        <span class="ch">AutoCAD</span><span class="ch">SolidWorks</span>
-                        <span class="ch">Fusion 360</span><span class="ch">ChatGPT</span>
-                        <span class="ch">Claude AI</span><span class="ch">MS Office</span>
-                    </div>
-                </div>
-
-                <div class="bar-sec rv">
-                    <div class="bar-row">
-                        <div class="bar-lbl">Scheduling / Primavera P6</div>
-                        <div class="bar-track">
-                            <div class="bar-fill" data-w="82"></div>
-                        </div>
-                    </div>
-                    <div class="bar-row">
-                        <div class="bar-lbl">Advanced Excel &amp; Reporting</div>
-                        <div class="bar-track">
-                            <div class="bar-fill" data-w="88"></div>
-                        </div>
-                    </div>
-                    <div class="bar-row">
-                        <div class="bar-lbl">Site Mechanical Knowledge</div>
-                        <div class="bar-track">
-                            <div class="bar-fill" data-w="91"></div>
-                        </div>
-                    </div>
-                    <div class="bar-row">
-                        <div class="bar-lbl">AutoCAD / 3D Design</div>
-                        <div class="bar-track">
-                            <div class="bar-fill" data-w="76"></div>
-                        </div>
-                    </div>
-                    <div class="bar-row">
-                        <div class="bar-lbl">AI-Enhanced Workflows</div>
-                        <div class="bar-track">
-                            <div class="bar-fill" data-w="85"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="task-grid">
+          <div class="task-card"><span class="tc-ico">⚙️</span><div class="tc-title">Crude Pump Supervision</div><div class="tc-desc">Supervising installation of crude oil pumps — base plate preparation, grouting, alignment checks using dial gauge, coupling installation, and pre-commissioning activities</div></div>
+          <div class="task-card"><span class="tc-ico">🔍</span><div class="tc-title">Welding Inspection</div><div class="tc-desc">Fit-up checks before welding — gap, bevel, root face, and alignment. Post-weld visual inspection, weld ID marking, and maintaining weld inspection registers</div></div>
+          <div class="task-card"><span class="tc-ico">🛠️</span><div class="tc-title">Pipe &amp; Spool Erection</div><div class="tc-desc">Coordinating rigging and lifting of pipe spools, flange alignment, gasket installation, bolt torquing sequences, and final joint handover documentation</div></div>
+          <div class="task-card"><span class="tc-ico">🔧</span><div class="tc-title">Valves &amp; Fittings</div><div class="tc-desc">Working knowledge of gate, globe, ball, butterfly, and check valves. Understanding of flanges (ASME/ANSI), pipe fittings (CS, SS, Alloy), and piping specifications</div></div>
+          <div class="task-card"><span class="tc-ico">📋</span><div class="tc-title">Site Reports</div><div class="tc-desc">Daily site progress reports, manpower deployment records, material inspection reports (MIR), and non-conformance reports (NCR) maintenance</div></div>
+          <div class="task-card"><span class="tc-ico">🦺</span><div class="tc-title">HSE Compliance</div><div class="tc-desc">Toolbox talks, PTW (Permit to Work) system, PPE compliance, JSA preparation, near-miss reporting, and participation in safety audits on a live refinery site</div></div>
         </div>
-    </section>
-
-    <!-- ══ EXPERIENCE ══ -->
-    <section id="experience">
-        <div class="sec-top rv">
-            <div class="sec-tag">Career</div>
-            <h2 class="sec-h">Where I've <em>Built</em></h2>
-            <p class="sec-sub">Every role shaped how I plan today.</p>
+        <div class="xp-tags">
+          <span class="xt">IOCL Panipat</span><span class="xt">Crude Pump</span><span class="xt">Welding Inspection</span>
+          <span class="xt">Pipe Erection</span><span class="xt">Valves &amp; Fittings</span><span class="xt">HSE</span><span class="xt">PTW</span>
         </div>
+      </div>
 
-        <div class="xp-wrap rv">
-            <div class="xp-side">
-                <button class="xt on" onclick="xTab(this,0)">
-                    <div class="xt-per">Dec 2025 – Present</div>
-                    <div class="xt-role">Planning Engineer</div>
-                    <div class="xt-co">Offshore Infra · Lagos, Nigeria</div>
-                </button>
-                <button class="xt" onclick="xTab(this,1)">
-                    <div class="xt-per">May – Dec 2025</div>
-                    <div class="xt-role">Mechanical Engineer</div>
-                    <div class="xt-co">IOCL Panipat · India</div>
-                </button>
-                <button class="xt" onclick="xTab(this,2)">
-                    <div class="xt-per">Graduated 2025</div>
-                    <div class="xt-role">B.Tech · Gold Medalist</div>
-                    <div class="xt-co">CSA University · Kanpur</div>
-                </button>
-                <button class="xt" onclick="xTab(this,3)">
-                    <div class="xt-per">Training</div>
-                    <div class="xt-role">Farm Machinery</div>
-                    <div class="xt-co">NRFMTTI · Hisar</div>
-                </button>
-            </div>
-
-            <div class="xp-main">
-
-                <div class="xp-pane on">
-                    <div class="xp-badge">● Current Role</div>
-                    <div class="xp-title">Planning <em>Engineer</em></div>
-                    <div class="xp-company">Offshore Infrastructure Ltd. · Free Trade Zone, Lagos, Nigeria · Dec 2025 –
-                        Present</div>
-                    <p class="xp-p">Brought directly from the IOCL construction site to the planning office in Lagos —
-                        my site instincts power every schedule I build. I plan what I have physically supervised, making
-                        every duration realistic and every logic link grounded in real construction.</p>
-                    <ul class="xp-list">
-                        <li>Schedule development &amp; maintenance using <strong>Primavera P6</strong> and Advanced
-                            Excel</li>
-                        <li>QS checking — quantity verification against drawings and Bill of Quantities</li>
-                        <li>Billing support — preparation and validation of primary billing documentation</li>
-                        <li>S-curve generation, look-ahead scheduling, and weekly progress reporting</li>
-                        <li>Leveraging <strong>AI tools (ChatGPT, Claude)</strong> for analysis and report automation
-                        </li>
-                        <li>Coordinating with site teams to align schedules with actual construction sequences</li>
-                    </ul>
-                    <div class="tags">
-                        <span class="tg">Primavera P6</span><span class="tg">Advanced Excel</span><span class="tg">QS
-                            Checking</span>
-                        <span class="tg">Billing</span><span class="tg">ChatGPT / Claude</span><span class="tg">Lagos,
-                            Nigeria</span>
-                    </div>
-                </div>
-
-                <div class="xp-pane">
-                    <div class="xp-badge">● Foundation Role</div>
-                    <div class="xp-title">Mechanical <em>Engineer</em></div>
-                    <div class="xp-company">Offshore Infrastructure Ltd. · IOCL Panipat Refinery, Haryana, India · May –
-                        Dec 2025</div>
-                    <p class="xp-p">Deployed on-site at <strong>IOCL Panipat Refinery</strong> — one of India's largest
-                        refinery complexes. Seven months of hands-on mechanical construction in a live, safety-critical
-                        oil &amp; gas environment. This role is the bedrock of everything I do in planning today.</p>
-                    <ul class="xp-list">
-                        <li>Supervision of <strong>crude pump</strong> installation — alignment, grouting, coupling,
-                            commissioning readiness</li>
-                        <li>Fit-up and welding inspection — root pass checks, joint alignment, weld quality
-                            documentation</li>
-                        <li>Daily site report preparation and inspection record maintenance</li>
-                        <li>Pipe and spool erection — rigging coordination, flange alignment, bolted joint assembly</li>
-                        <li>Working knowledge of gate, globe, ball, butterfly &amp; check valves; CS/SS/Alloy piping
-                        </li>
-                        <li>Strict HSE (Health, Safety &amp; Environment) compliance throughout all activities</li>
-                    </ul>
-                    <div class="tags">
-                        <span class="tg">IOCL Panipat</span><span class="tg">Crude Pump</span><span class="tg">Welding
-                            Inspection</span>
-                        <span class="tg">Pipe Erection</span><span class="tg">Valves &amp; Fittings</span><span
-                            class="tg">HSE</span>
-                    </div>
-                </div>
-
-                <div class="xp-pane">
-                    <div class="xp-badge">● Academic Achievement</div>
-                    <div class="xp-title">B.Tech Mechanical <em>Engineering</em></div>
-                    <div class="xp-company">CSA University of Agriculture &amp; Technology, Kanpur · Chancellor's Gold
-                        Medalist · 2025</div>
-                    <p class="xp-p">Graduated as the <strong>Chancellor's Gold Medalist</strong> — the university's
-                        highest distinction awarded to the top graduating student across all departments. Four years of
-                        rigorous mechanical engineering built the technical foundation behind every planning decision I
-                        make.</p>
-                    <ul class="xp-list">
-                        <li><strong>Chancellor's Gold Medal</strong> — Top Graduate of the University</li>
-                        <li>B.Tech Final Project: Performance Analysis of a Mobile Corn Thresher (Solar &amp;
-                            Conventional Power)</li>
-                        <li>Patent granted: Multi-Purpose Solar Based Corn Sheller</li>
-                        <li>Three published research papers in agricultural engineering journals</li>
-                    </ul>
-                    <div class="tags">
-                        <span class="tg">Chancellor's Gold Medal</span><span class="tg">B.Tech Mech. Engg.</span>
-                        <span class="tg">Patent Holder</span><span class="tg">3 Publications</span>
-                    </div>
-                </div>
-
-                <div class="xp-pane">
-                    <div class="xp-badge">● Technical Training</div>
-                    <div class="xp-title">Farm Machinery <em>Training</em></div>
-                    <div class="xp-company">NRFMTTI — Northern Region Farm Machinery Training &amp; Testing Institute,
-                        Hisar, Haryana</div>
-                    <p class="xp-p">Completed a structured academic course at <strong>NRFMTTI Hisar</strong> — India's
-                        premier government institute for farm machinery training and testing. Built hands-on expertise
-                        in agricultural engineering systems including advanced tractor and machinery operations.</p>
-                    <ul class="xp-list">
-                        <li>Academic course on farm machinery — operations, testing, and maintenance standards</li>
-                        <li>Advanced workshops on tractor systems and agricultural mechanisation</li>
-                        <li>Volunteered at the <strong>Kisan Pradarshini</strong> — demonstrating woman-friendly farm
-                            machinery to farmers</li>
-                    </ul>
-                    <div class="tags">
-                        <span class="tg">NRFMTTI, Hisar</span><span class="tg">Farm Machinery</span>
-                        <span class="tg">Tractor Systems</span><span class="tg">Kisan Pradarshini</span>
-                    </div>
-                </div>
-
-            </div>
+      <!-- Pane 2: Education -->
+      <div class="xp-pane">
+        <div class="xp-badge">Academic · Top Graduate</div>
+        <div class="xp-h">B.Tech Mechanical <em>Engineering</em></div>
+        <div class="xp-meta">CSA University of Agriculture &amp; Technology, Kanpur · Chancellor's Gold Medalist · 2025</div>
+        <p class="xp-p">Graduated as the <b>Chancellor's Gold Medalist</b> — the university's highest distinction, awarded to the top student across all departments. My B.Tech final project on solar-powered corn thresher performance analysis directly led to a patent.</p>
+        <ul class="xp-ul">
+          <li><b>Chancellor's Gold Medal</b> — Rank 1 across entire university, all departments</li>
+          <li>B.Tech Final Project: "Performance Analysis of Mobile Corn Thresher — Solar &amp; Conventional Power Sources"</li>
+          <li>Core subjects: Machine Design, Thermodynamics, Fluid Mechanics, Manufacturing, Hydraulics, CAD/CAM</li>
+          <li>Patent granted: Multi-Purpose Solar Based Corn Sheller — registered IP</li>
+          <li>3 research papers published in agricultural engineering journals</li>
+        </ul>
+        <div class="xp-tags">
+          <span class="xt">Chancellor's Gold Medal</span><span class="xt">B.Tech Mech. Engg.</span>
+          <span class="xt">Patent Holder</span><span class="xt">3 Publications</span><span class="xt">Rank 1</span>
         </div>
-    </section>
+      </div>
 
-    <!-- ══ ACHIEVEMENTS ══ -->
-    <section id="achievements">
-        <div class="sec-top rv">
-            <div class="sec-tag">Honours</div>
-            <h2 class="sec-h">What Sets Me <em>Apart</em></h2>
-            <p class="sec-sub">Academic excellence, intellectual property, and international impact.</p>
+      <!-- Pane 3: Training -->
+      <div class="xp-pane">
+        <div class="xp-badge">Technical Training</div>
+        <div class="xp-h">Farm Machinery <em>Training</em></div>
+        <div class="xp-meta">NRFMTTI — Northern Region Farm Machinery Training &amp; Testing Institute, Hisar, Haryana</div>
+        <p class="xp-p">Completed a structured government-certified course at <b>NRFMTTI Hisar</b> — India's premier institute for farm machinery training, testing, and evaluation.</p>
+        <ul class="xp-ul">
+          <li>Academic course on farm machinery — operations, performance testing, and maintenance procedures</li>
+          <li>Advanced workshops on tractor systems — PTO, hydraulics, transmission, and implement attachment</li>
+          <li>Hands-on machinery lab sessions including thresher, combine harvester, and seed drill</li>
+          <li>Volunteered at <b>Kisan Pradarshini</b> — demonstrating woman-friendly farm machinery equipment to farming communities</li>
+        </ul>
+        <div class="xp-tags">
+          <span class="xt">NRFMTTI, Hisar</span><span class="xt">Farm Machinery</span>
+          <span class="xt">Tractor Systems</span><span class="xt">Kisan Pradarshini</span>
         </div>
+      </div>
 
-        <div class="ach-grid">
-            <div class="ach-card rv">
-                <div class="ach-num">01</div>
-                <div class="ach-ico">🥇</div>
-                <div class="ach-t">Chancellor's Gold Medal</div>
-                <div class="ach-d">Awarded the Chancellor's Gold Medal at CSA University of Agriculture &amp;
-                    Technology, Kanpur — the highest academic distinction given to the top graduating student across the
-                    entire university. A recognition of four years of engineering excellence and consistent academic
-                    leadership.</div>
-            </div>
-            <div class="ach-card rv d1">
-                <div class="ach-num">02</div>
-                <div class="ach-ico">📜</div>
-                <div class="ach-t">Patent — Solar Corn Sheller</div>
-                <div class="ach-d">Granted a patent for the "Multi-Purpose Solar Based Corn Sheller" — a sustainable,
-                    solar-powered agricultural machine designed to empower small-scale farmers with mechanised threshing
-                    and shelling. A complete journey from engineering concept to registered intellectual property.</div>
-            </div>
-            <div class="ach-card rv d2">
-                <div class="ach-num">03</div>
-                <div class="ach-ico">📄</div>
-                <div class="ach-t">3 Research Publications</div>
-                <div class="ach-d">Published three peer-reviewed research papers in agricultural engineering: the Paddy
-                    Thresher Cum Winnower, the Multipurpose Solar-Powered Corn Threshing Machine, and the Design &amp;
-                    Development of the Solar-Powered Corn Sheller — contributing original knowledge to sustainable farm
-                    mechanisation.</div>
-            </div>
-            <div class="ach-card rv d3">
-                <div class="ach-num">04</div>
-                <div class="ach-ico">🌍</div>
-                <div class="ach-t">International Deployment</div>
-                <div class="ach-d">Selected for international deployment to Lagos, Nigeria — working as a Planning
-                    Engineer at Offshore Infrastructure's Free Trade Zone office. Bridging hands-on Indian oil &amp; gas
-                    site expertise with project controls in a fast-growing African energy market.</div>
-            </div>
-        </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <!-- ══ TOOLKIT ══ -->
-    <section id="toolkit">
-        <div class="sec-top rv">
-            <div class="sec-tag">Toolkit</div>
-            <h2 class="sec-h">Certifications &amp; <em>Tools</em></h2>
-            <p class="sec-sub">Every certificate earned. Every tool mastered on real projects.</p>
-        </div>
+<!-- ═══ P6 & EXCEL SPOTLIGHT ═══ -->
+<section id="p6">
+  <div class="s-top">
+    <div class="s-ey rv">Technical Skills</div>
+    <h2 class="s-h rv">Primavera P6 &amp; <em>Excel</em></h2>
+    <p class="s-sub rv">The core tools of a planning engineer — detailed breakdown of what I can actually do.</p>
+  </div>
 
-        <div class="mq">
-            <div class="mq-track">
-                <div class="mq-card">
-                    <div class="mq-name">AutoCAD &amp; Fusion 360</div>
-                    <div class="mq-by">Coursera</div>
-                </div>
-                <div class="mq-card">
-                    <div class="mq-name">Spoken English Course</div>
-                    <div class="mq-by">Learn-Vern</div>
-                </div>
-                <div class="mq-card">
-                    <div class="mq-name">Graphics Software — AutoCAD</div>
-                    <div class="mq-by">Workshop Certificate</div>
-                </div>
-                <div class="mq-card">
-                    <div class="mq-name">Farm Machinery Operations</div>
-                    <div class="mq-by">NRFMTTI, Hisar</div>
-                </div>
-                <div class="mq-card">
-                    <div class="mq-name">Advanced Tractor Systems</div>
-                    <div class="mq-by">NRFMTTI Workshop</div>
-                </div>
-                <div class="mq-card">
-                    <div class="mq-name">AutoCAD &amp; Fusion 360</div>
-                    <div class="mq-by">Coursera</div>
-                </div>
-                <div class="mq-card">
-                    <div class="mq-name">Spoken English Course</div>
-                    <div class="mq-by">Learn-Vern</div>
-                </div>
-                <div class="mq-card">
-                    <div class="mq-name">Graphics Software — AutoCAD</div>
-                    <div class="mq-by">Workshop Certificate</div>
-                </div>
-                <div class="mq-card">
-                    <div class="mq-name">Farm Machinery Operations</div>
-                    <div class="mq-by">NRFMTTI, Hisar</div>
-                </div>
-                <div class="mq-card">
-                    <div class="mq-name">Advanced Tractor Systems</div>
-                    <div class="mq-by">NRFMTTI Workshop</div>
-                </div>
-            </div>
-        </div>
+  <div class="p6-grid">
+    <div class="p6-card rv">
+      <div class="p6-n">Primavera P6</div>
+      <span class="p6-icon">📅</span>
+      <div class="p6-title">Schedule Development</div>
+      <div class="p6-desc">Building project schedules from scratch — WBS creation, activity definition, duration estimation, logical relationships (FS, SS, SF, FF), and constraint setting. Ability to load baselines and compare against actuals.</div>
+      <div class="p6-pills"><span class="p6-pill">WBS</span><span class="p6-pill">Activity Coding</span><span class="p6-pill">Logic Links</span><span class="p6-pill">Constraints</span><span class="p6-pill">Baseline</span></div>
+    </div>
+    <div class="p6-card rv d1">
+      <div class="p6-n">Primavera P6</div>
+      <span class="p6-icon">🔴</span>
+      <div class="p6-title">Critical Path Method</div>
+      <div class="p6-desc">Identifying the critical path, calculating total float and free float, understanding near-critical activities, and using CPM to prioritise site resources and anticipate delays before they happen.</div>
+      <div class="p6-pills"><span class="p6-pill">CPM</span><span class="p6-pill">Float Analysis</span><span class="p6-pill">Near-Critical</span><span class="p6-pill">Delay Forecast</span></div>
+    </div>
+    <div class="p6-card rv d2">
+      <div class="p6-n">Advanced Excel</div>
+      <span class="p6-icon">📊</span>
+      <div class="p6-title">S-Curves &amp; Histograms</div>
+      <div class="p6-desc">Building planned vs actual S-curves for progress tracking, manpower histograms for resource planning, and earned value charts — all in Excel with dynamic formulas and conditional formatting.</div>
+      <div class="p6-pills"><span class="p6-pill">S-Curves</span><span class="p6-pill">EV Charts</span><span class="p6-pill">Histograms</span><span class="p6-pill">Pivot Tables</span></div>
+    </div>
+    <div class="p6-card rv d3">
+      <div class="p6-n">Advanced Excel</div>
+      <span class="p6-icon">📈</span>
+      <div class="p6-title">Dashboards &amp; Reports</div>
+      <div class="p6-desc">Weekly and monthly progress dashboards, look-ahead schedule templates, variance analysis tables, and QS billing trackers — built with VLOOKUP, INDEX/MATCH, SUMIF, and data validation.</div>
+      <div class="p6-pills"><span class="p6-pill">Dashboards</span><span class="p6-pill">VLOOKUP</span><span class="p6-pill">INDEX/MATCH</span><span class="p6-pill">Data Validation</span></div>
+    </div>
+    <div class="p6-card rv">
+      <div class="p6-n">Primavera P6</div>
+      <span class="p6-icon">📥</span>
+      <div class="p6-title">Resource &amp; Cost Loading</div>
+      <div class="p6-desc">Assigning resources to activities, setting up resource calendars, understanding cost loading basics, and generating resource usage histograms to support project planning and billing.</div>
+      <div class="p6-pills"><span class="p6-pill">Resource Loading</span><span class="p6-pill">Calendars</span><span class="p6-pill">Cost Baseline</span><span class="p6-pill">Histograms</span></div>
+    </div>
+    <div class="p6-card rv d1">
+      <div class="p6-n">Advanced Excel</div>
+      <span class="p6-icon">🤖</span>
+      <div class="p6-title">AI-Powered Planning</div>
+      <div class="p6-desc">Using <b>ChatGPT and Claude AI</b> to automate repetitive planning tasks — generating schedule narratives, interpreting delay reports, cross-checking quantities, and drafting project correspondence faster and more accurately.</div>
+      <div class="p6-pills"><span class="p6-pill">ChatGPT</span><span class="p6-pill">Claude AI</span><span class="p6-pill">Automation</span><span class="p6-pill">Report Drafting</span></div>
+    </div>
+  </div>
+</section>
 
-        <div class="tool-grid rv">
-            <div class="tool-card"><span class="tc-ico">📅</span><span class="tc-lbl">Primavera P6</span></div>
-            <div class="tool-card"><span class="tc-ico">📊</span><span class="tc-lbl">Advanced Excel</span></div>
-            <div class="tool-card"><span class="tc-ico">📐</span><span class="tc-lbl">AutoCAD</span></div>
-            <div class="tool-card"><span class="tc-ico">🔧</span><span class="tc-lbl">SolidWorks</span></div>
-            <div class="tool-card"><span class="tc-ico">⚙️</span><span class="tc-lbl">Fusion 360</span></div>
-            <div class="tool-card"><span class="tc-ico">🤖</span><span class="tc-lbl">ChatGPT / Claude</span></div>
-            <div class="tool-card"><span class="tc-ico">📋</span><span class="tc-lbl">MS Office Suite</span></div>
-            <div class="tool-card"><span class="tc-ico">📈</span><span class="tc-lbl">MS PowerPoint</span></div>
-        </div>
-    </section>
+<!-- ═══ ACHIEVEMENTS ═══ -->
+<section id="achievements">
+  <div class="s-top">
+    <div class="s-ey rv">Honours</div>
+    <h2 class="s-h rv">What Sets Me <em>Apart</em></h2>
+    <p class="s-sub rv">Academic excellence, intellectual property, and international impact — before age 24.</p>
+  </div>
 
-    <!-- ══ CONTACT ══ -->
-    <section id="contact">
-        <div class="sec-top rv">
-            <div class="sec-tag">Contact</div>
-            <h2 class="sec-h">Let's <em>Connect</em></h2>
-            <p class="sec-sub">Open to planning roles, project controls, and oil &amp; gas opportunities worldwide.</p>
-        </div>
+  <div class="ach-grid">
+    <div class="ach-card rv">
+      <div class="ach-bg">01</div>
+      <div class="ach-ico">🥇</div>
+      <div class="ach-t">Chancellor's Gold Medal</div>
+      <div class="ach-d">Awarded the Chancellor's Gold Medal at CSA University of Agriculture &amp; Technology, Kanpur — the highest academic distinction given to the <b>top graduating student</b> across all departments of the university. Graduating rank 1 from an engineering university proves I can learn fast, work hard, and outperform.</div>
+    </div>
+    <div class="ach-card rv d1">
+      <div class="ach-bg">02</div>
+      <div class="ach-ico">📜</div>
+      <div class="ach-t">Patent — Solar Corn Sheller</div>
+      <div class="ach-d">Granted a patent for the "Multi-Purpose Solar Based Corn Sheller" — a sustainable, solar-powered agricultural machine I designed, built, and took from concept to registered intellectual property. Backed by three published research papers. At 23, holding a patent demonstrates the ability to deliver real, original engineering.</div>
+    </div>
+    <div class="ach-card rv d2">
+      <div class="ach-bg">03</div>
+      <div class="ach-ico">📄</div>
+      <div class="ach-t">3 Research Publications</div>
+      <div class="ach-d">Published three peer-reviewed research papers: the Paddy Thresher Cum Winnower, the Multipurpose Solar-Powered Corn Threshing Machine, and the Design &amp; Development of the Solar-Powered Corn Sheller. Writing and publishing research demonstrates structured thinking — a core planning skill.</div>
+    </div>
+    <div class="ach-card rv d3">
+      <div class="ach-bg">04</div>
+      <div class="ach-ico">🌍</div>
+      <div class="ach-t">International at 23</div>
+      <div class="ach-d">Deployed to <b>Lagos, Nigeria</b> as a planning engineer within months of graduating — working at Offshore Infrastructure Ltd.'s Free Trade Zone office. Not many 23-year-old engineers are working internationally on oil &amp; gas projects. I am. And I'm building fast.</div>
+    </div>
+  </div>
+</section>
 
-        <div class="contact-wrap rv">
-            <div class="c-left">
-                <p class="c-headline">Ready to bring site-hardened planning to your next project — <em>anywhere in the
-                        world.</em></p>
-                <a href="mailto:csa.nitesh@gmail.com" class="c-email">csa.nitesh@gmail.com &nbsp;→</a>
-                <ul class="c-list">
-                    <li><span class="c-key">Mobile</span><span class="c-val"><a href="tel:+919456094691">+91 94560
-                                94691</a></span></li>
-                    <li><span class="c-key">Currently Based</span><span class="c-val">Lagos, Nigeria</span></li>
-                    <li><span class="c-key">Home</span><span class="c-val">Raebareli, U.P., India</span></li>
-                    <li><span class="c-key">Languages</span><span class="c-val">Hindi &amp; English</span></li>
-                    <li><span class="c-key">Availability</span><span class="c-val c-avail">Open to Opportunities</span>
-                    </li>
-                </ul>
-            </div>
-            <div class="c-right">
-                <div class="cf-title">Send a <em>Message</em></div>
-                <div class="cf-field"><label>Your Name</label><input type="text" placeholder="John Smith" /></div>
-                <div class="cf-field"><label>Email Address</label><input type="email" placeholder="john@company.com" />
-                </div>
-                <div class="cf-field"><label>Message</label><textarea
-                        placeholder="I'd like to discuss a planning opportunity..."></textarea></div>
-                <button class="cf-btn" id="cfb"><span id="cfbs">Send Message →</span></button>
-            </div>
-        </div>
-    </section>
+<!-- ═══ TOOLKIT ═══ -->
+<section id="toolkit">
+  <div class="s-top">
+    <div class="s-ey rv">Toolkit</div>
+    <h2 class="s-h rv">Certifications &amp; <em>Tools</em></h2>
+    <p class="s-sub rv">Certified, trained, and tools-ready from day one.</p>
+  </div>
 
-    <!-- ══ FOOTER ══ -->
-    <footer>
-        <p>© 2026 Nitesh Pal<span class="footer-dot"></span>Planning &amp; Mechanical Engineer</p>
-        <p>Chancellor's Gold Medalist<span class="footer-dot"></span>Patent Holder<span class="footer-dot"></span>IOCL
-            Site Experience<span class="footer-dot"></span>Lagos, Nigeria</p>
-    </footer>
+  <div class="mq-outer">
+    <div class="mq-track">
+      <div class="mq-card"><div class="mq-name">AutoCAD &amp; Fusion 360</div><div class="mq-by">Coursera</div></div>
+      <div class="mq-card"><div class="mq-name">Spoken English Course</div><div class="mq-by">Learn-Vern</div></div>
+      <div class="mq-card"><div class="mq-name">Graphics Software — AutoCAD</div><div class="mq-by">Workshop Certificate</div></div>
+      <div class="mq-card"><div class="mq-name">Farm Machinery Operations</div><div class="mq-by">NRFMTTI, Hisar</div></div>
+      <div class="mq-card"><div class="mq-name">Advanced Tractor Systems</div><div class="mq-by">NRFMTTI Workshop</div></div>
+      <div class="mq-card"><div class="mq-name">AutoCAD &amp; Fusion 360</div><div class="mq-by">Coursera</div></div>
+      <div class="mq-card"><div class="mq-name">Spoken English Course</div><div class="mq-by">Learn-Vern</div></div>
+      <div class="mq-card"><div class="mq-name">Graphics Software — AutoCAD</div><div class="mq-by">Workshop Certificate</div></div>
+      <div class="mq-card"><div class="mq-name">Farm Machinery Operations</div><div class="mq-by">NRFMTTI, Hisar</div></div>
+      <div class="mq-card"><div class="mq-name">Advanced Tractor Systems</div><div class="mq-by">NRFMTTI Workshop</div></div>
+    </div>
+  </div>
 
-    <script>
-        (function () {
-            'use strict';
+  <div class="tool-grid rv">
+    <div class="t-brick"><span class="t-ico">📅</span><span class="t-lbl">Primavera P6</span></div>
+    <div class="t-brick"><span class="t-ico">📊</span><span class="t-lbl">Advanced Excel</span></div>
+    <div class="t-brick"><span class="t-ico">📐</span><span class="t-lbl">AutoCAD</span></div>
+    <div class="t-brick"><span class="t-ico">🔧</span><span class="t-lbl">SolidWorks</span></div>
+    <div class="t-brick"><span class="t-ico">⚙️</span><span class="t-lbl">Fusion 360</span></div>
+    <div class="t-brick"><span class="t-ico">🤖</span><span class="t-lbl">ChatGPT / Claude</span></div>
+    <div class="t-brick"><span class="t-ico">📋</span><span class="t-lbl">MS Office</span></div>
+    <div class="t-brick"><span class="t-ico">📈</span><span class="t-lbl">MS PowerPoint</span></div>
+  </div>
+</section>
 
-            /* ── CURSOR ── */
-            var cd = document.getElementById('cd');
-            var cr = document.getElementById('cr');
-            var mx = 0, my = 0, rx = 0, ry = 0;
-            document.addEventListener('mousemove', function (e) {
-                mx = e.clientX; my = e.clientY;
-                cd.style.transform = 'translate(' + mx + 'px,' + my + 'px)';
-            });
-            function animC() {
-                rx += (mx - rx) * .11; ry += (my - ry) * .11;
-                cr.style.transform = 'translate(' + rx + 'px,' + ry + 'px)';
-                requestAnimationFrame(animC);
-            }
-            animC();
-            var hEls = document.querySelectorAll('a,button,.ch,.h-pill,.tool-card,.ach-card,.xt');
-            for (var i = 0; i < hEls.length; i++) {
-                hEls[i].addEventListener('mouseenter', function () { document.body.classList.add('hov') });
-                hEls[i].addEventListener('mouseleave', function () { document.body.classList.remove('hov') });
-            }
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="s-top">
+    <div class="s-ey rv">Contact</div>
+    <h2 class="s-h rv">Let's <em>Connect</em></h2>
+    <p class="s-sub rv">Looking for a junior planning engineer who hits the ground running? Let's talk.</p>
+  </div>
 
-            /* ── NAV ── */
-            var nav = document.getElementById('nav');
-            function onScroll() { nav.classList.toggle('on', window.scrollY > 50) }
-            window.addEventListener('scroll', onScroll, { passive: true });
+  <div class="c-grid rv">
+    <div class="c-left">
+      <p class="c-tag">Early in my career, but not early in my <em>knowledge.</em> Ready to grow, contribute, and deliver on your project.</p>
+      <a href="mailto:csa.nitesh@gmail.com" class="c-email">csa.nitesh@gmail.com →</a>
+      <ul class="c-list">
+        <li><span class="ck">Mobile</span><span class="cv"><a href="tel:+919456094691">+91 94560 94691</a></span></li>
+        <li><span class="ck">Current Location</span><span class="cv">Lagos, Nigeria</span></li>
+        <li><span class="ck">Home</span><span class="cv">Raebareli, U.P., India</span></li>
+        <li><span class="ck">Experience</span><span class="cv">13 Months (O&amp;G)</span></li>
+        <li><span class="ck">Languages</span><span class="cv">Hindi &amp; English</span></li>
+        <li><span class="ck">Status</span><span class="cv cv-avail">Open to Opportunities</span></li>
+      </ul>
+    </div>
+    <div class="c-right">
+      <div class="cf-t">Send a <em>Message</em></div>
+      <div class="cf-f"><label>Your Name</label><input type="text" placeholder="John Smith"/></div>
+      <div class="cf-f"><label>Email Address</label><input type="email" placeholder="john@company.com"/></div>
+      <div class="cf-f"><label>Message</label><textarea placeholder="I have a planning role you'd be great for..."></textarea></div>
+      <button class="cf-btn" id="cfbtn"><span id="cfsp">Send Message →</span></button>
+    </div>
+  </div>
+</section>
 
-            /* ── CANVAS ── */
-            var cvs = document.getElementById('cvs');
-            var ctx = cvs.getContext('2d');
-            var W, H;
-            function resize() { W = cvs.width = window.innerWidth; H = cvs.height = window.innerHeight; }
-            resize();
-            window.addEventListener('resize', resize, { passive: true });
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <p>© 2026 Nitesh Pal<span class="fd"></span>Junior Planning Engineer</p>
+  <p>Gold Medalist<span class="fd"></span>Patent Holder<span class="fd"></span>IOCL Site Exp.<span class="fd"></span>Lagos, Nigeria</p>
+</footer>
 
-            /* particles */
-            var PTS = [];
-            function newPt() { return { x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.1 + .2, vx: (Math.random() - .5) * .22, vy: (Math.random() - .5) * .22, a: Math.random() * .3 + .04, life: Math.floor(Math.random() * 250 + 80), ml: 0 }; }
-            for (var p = 0; p < 65; p++) { var pt = newPt(); pt.ml = pt.life; PTS.push(pt); }
+<script>
+(function(){
+'use strict';
 
-            /* lines */
-            var LNS = [];
-            for (var l = 0; l < 12; l++) { LNS.push({ x: Math.random() * W, y: Math.random() * H, len: Math.random() * 90 + 30, a: Math.random() * Math.PI * 2, va: (Math.random() - .5) * .0025, op: Math.random() * .05 + .01 }); }
+/* ── CURSOR ── */
+var cd=document.getElementById('cd'),cr=document.getElementById('cr');
+var mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',function(e){
+  mx=e.clientX;my=e.clientY;
+  cd.style.transform='translate('+mx+'px,'+my+'px)';
+});
+(function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cr.style.transform='translate('+rx+'px,'+ry+'px)';requestAnimationFrame(loop)})();
+var hEls=document.querySelectorAll('a,button,.chip,.t-brick,.ach-card,.xtb,.p6-card,.mq-card,.task-card');
+for(var i=0;i<hEls.length;i++){
+  (function(el){
+    el.addEventListener('mouseenter',function(){document.body.classList.add('hov')});
+    el.addEventListener('mouseleave',function(){document.body.classList.remove('hov')});
+  })(hEls[i]);
+}
 
-            function draw() {
-                ctx.clearRect(0, 0, W, H);
-                for (var i = 0; i < LNS.length; i++) {
-                    var ln = LNS[i]; ln.a += ln.va;
-                    ctx.beginPath();
-                    ctx.moveTo(ln.x, ln.y);
-                    ctx.lineTo(ln.x + Math.cos(ln.a) * ln.len, ln.y + Math.sin(ln.a) * ln.len);
-                    ctx.strokeStyle = 'rgba(212,168,67,' + ln.op + ')';
-                    ctx.lineWidth = .5; ctx.stroke();
-                }
-                for (var j = 0; j < PTS.length; j++) {
-                    var p = PTS[j];
-                    p.x += p.vx; p.y += p.vy; p.life--;
-                    if (p.life <= 0) { var np = newPt(); np.ml = np.life; PTS[j] = np; continue; }
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(212,168,67,' + (p.a * (p.life / p.ml)) + ')';
-                    ctx.fill();
-                }
-                requestAnimationFrame(draw);
-            }
-            draw();
+/* ── NAV ── */
+var nav=document.getElementById('nav');
+window.addEventListener('scroll',function(){nav.classList.toggle('on',window.scrollY>55);},{passive:true});
 
-            /* ── SCROLL REVEAL ── */
-            var rvEls = document.querySelectorAll('.rv,.rvL,.rvR');
-            var rvObs = new IntersectionObserver(function (entries) {
-                for (var i = 0; i < entries.length; i++) {
-                    if (entries[i].isIntersecting) entries[i].target.classList.add('in');
-                }
-            }, { threshold: .08 });
-            for (var r = 0; r < rvEls.length; r++) rvObs.observe(rvEls[r]);
+/* ── BG CANVAS ── */
+var cvs=document.getElementById('bgc'),ctx=cvs.getContext('2d'),W,H;
+function rsz(){W=cvs.width=window.innerWidth;H=cvs.height=window.innerHeight;}
+rsz();window.addEventListener('resize',rsz,{passive:true});
 
-            /* ── SKILL BARS ── */
-            var bars = document.querySelectorAll('.bar-fill');
-            var barObs = new IntersectionObserver(function (entries) {
-                for (var i = 0; i < entries.length; i++) {
-                    if (entries[i].isIntersecting) {
-                        var el = entries[i].target;
-                        el.style.width = el.getAttribute('data-w') + '%';
-                        setTimeout(function (e) { e.classList.add('lit') }, 1800, el);
-                        barObs.unobserve(el);
-                    }
-                }
-            }, { threshold: .4 });
-            for (var b = 0; b < bars.length; b++) barObs.observe(bars[b]);
+var pts=[];
+function npt(){return{x:Math.random()*W,y:Math.random()*H,r:Math.random()*.85+.15,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,a:Math.random()*.25+.04,life:Math.floor(Math.random()*240+70),ml:1};}
+for(var pi=0;pi<50;pi++){var p=npt();p.ml=p.life;pts.push(p);}
 
-            /* ── COUNTERS ── */
-            function count(id, target, delay) {
-                setTimeout(function () {
-                    var el = document.getElementById(id);
-                    if (!el) return;
-                    var n = 0;
-                    function step() { n++; el.textContent = n; if (n < target) setTimeout(step, 220); }
-                    step();
-                }, delay);
-            }
-            window.addEventListener('load', function () {
-                count('ks1', 2, 1500); count('ks2', 1, 1750); count('ks3', 3, 2000);
-                count('k1', 2, 600); count('k2', 1, 800); count('k3', 3, 1000);
-            });
+/* engineering grid lines */
+var gls=[];
+for(var gi=0;gi<10;gi++){gls.push({x:Math.random()*W,y:Math.random()*H,len:Math.random()*100+25,ang:Math.random()*Math.PI*2,va:(Math.random()-.5)*.0022,op:Math.random()*.042+.008});}
 
-            /* ── XP TABS ── */
-            var xBtns = document.querySelectorAll('.xt');
-            var xPanes = document.querySelectorAll('.xp-pane');
-            window.xTab = function (btn, idx) {
-                for (var i = 0; i < xBtns.length; i++) xBtns[i].classList.remove('on');
-                for (var j = 0; j < xPanes.length; j++) xPanes[j].classList.remove('on');
-                btn.classList.add('on');
-                xPanes[idx].classList.add('on');
-            };
+(function draw(){
+  ctx.clearRect(0,0,W,H);
+  for(var i=0;i<gls.length;i++){
+    var l=gls[i];l.ang+=l.va;
+    ctx.beginPath();ctx.moveTo(l.x,l.y);
+    ctx.lineTo(l.x+Math.cos(l.ang)*l.len,l.y+Math.sin(l.ang)*l.len);
+    ctx.strokeStyle='rgba(200,169,81,'+l.op+')';ctx.lineWidth=.5;ctx.stroke();
+  }
+  for(var j=0;j<pts.length;j++){
+    var pt=pts[j];pt.x+=pt.vx;pt.y+=pt.vy;pt.life--;
+    if(pt.life<=0){var np=npt();np.ml=np.life;pts[j]=np;continue;}
+    ctx.beginPath();ctx.arc(pt.x,pt.y,pt.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(200,169,81,'+(pt.a*(pt.life/pt.ml))+')';ctx.fill();
+  }
+  requestAnimationFrame(draw);
+})();
 
-            /* ── CONTACT BTN ── */
-            var cfb = document.getElementById('cfb');
-            var cfbs = document.getElementById('cfbs');
-            if (cfb) {
-                cfb.addEventListener('click', function () {
-                    cfbs.textContent = 'Message Sent ✓';
-                    cfb.style.background = 'linear-gradient(135deg,#1a3a1a,#0d200d)';
-                    setTimeout(function () {
-                        cfbs.textContent = 'Send Message →';
-                        cfb.style.background = '';
-                    }, 3000);
-                });
-            }
+/* ── SCROLL REVEAL ── */
+var rvEls=document.querySelectorAll('.rv,.rvL,.rvR');
+var rvObs=new IntersectionObserver(function(entries){
+  for(var i=0;i<entries.length;i++){if(entries[i].isIntersecting)entries[i].target.classList.add('in');}
+},{threshold:.07});
+for(var ri=0;ri<rvEls.length;ri++)rvObs.observe(rvEls[ri]);
 
-        })();
-    </script>
+/* ── SKILL BAR FILLS ── */
+var fills=document.querySelectorAll('.st-fill');
+var bObs=new IntersectionObserver(function(entries){
+  for(var i=0;i<entries.length;i++){
+    if(entries[i].isIntersecting){
+      var el=entries[i].target;
+      el.style.width=el.getAttribute('data-w')+'%';
+      setTimeout((function(e){return function(){e.classList.add('glow');};})(el),1650);
+      bObs.unobserve(el);
+    }
+  }
+},{threshold:.35});
+for(var bi=0;bi<fills.length;bi++)bObs.observe(fills[bi]);
+
+/* ── GANTT BARS ── */
+var gbars=document.querySelectorAll('.g-bar');
+var gfired=false;
+var gObs=new IntersectionObserver(function(entries){
+  if(entries[0].isIntersecting&&!gfired){
+    gfired=true;
+    for(var i=0;i<gbars.length;i++){
+      (function(bar,idx){
+        setTimeout(function(){
+          bar.style.width=bar.getAttribute('data-w');
+          bar.classList.add('lit');
+        },idx*200);
+      })(gbars[i],i);
+    }
+    var gp=document.querySelector('.gantt-progress');
+    if(gp)setTimeout(function(){gp.classList.add('lit');},400);
+    gObs.disconnect();
+  }
+},{threshold:.25});
+var gbox=document.querySelector('.gantt-wrap');
+if(gbox)gObs.observe(gbox);
+
+/* ── COUNTERS ── */
+function count(id,target,delay){
+  setTimeout(function(){
+    var el=document.getElementById(id);if(!el)return;
+    var n=0;(function step(){n++;el.textContent=n;if(n<target)setTimeout(step,180);})();
+  },delay);
+}
+window.addEventListener('load',function(){
+  count('hs1',13,1400);count('hs2',1,1700);count('hs3',3,2000);
+  count('k1',13,500);count('k2',1,700);count('k3',3,900);
+});
+
+/* ── XP TABS ── */
+var xtbs=document.querySelectorAll('.xtb'),xpanes=document.querySelectorAll('.xp-pane');
+window.xt=function(btn,idx){
+  for(var i=0;i<xtbs.length;i++)xtbs[i].classList.remove('on');
+  for(var j=0;j<xpanes.length;j++)xpanes[j].classList.remove('on');
+  btn.classList.add('on');xpanes[idx].classList.add('on');
+};
+
+/* ── FORM ── */
+var cfbtn=document.getElementById('cfbtn'),cfsp=document.getElementById('cfsp');
+if(cfbtn){cfbtn.addEventListener('click',function(){
+  cfsp.textContent='Message Sent ✓';cfbtn.style.background='linear-gradient(135deg,#1a3a1a,#0d200d)';
+  setTimeout(function(){cfsp.textContent='Send Message →';cfbtn.style.background='';},3000);
+});}
+
+})();
+</script>
 </body>
-
 </html>
